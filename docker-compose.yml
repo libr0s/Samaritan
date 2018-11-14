@@ -1,0 +1,14 @@
+version: "2"
+services:
+    backend:
+       build: "./samaritan-backend"
+       ports:
+           - "8000:5000"
+       depends_on:
+           - "db"
+       volumes:
+           - "./samaritan-backend:/app"
+    db:
+       image: "postgres:latest"
+       volumes:
+           - "aplikacja-zapisowa_postgress-volume"

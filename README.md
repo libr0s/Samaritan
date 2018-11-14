@@ -7,7 +7,7 @@ Volunteer app
 - `/samaritan-backend` - backend
 
 ## Backend
-W celu uruchamiania bakcendu potrzebny jest `docker` oraz `docker-compose`. Zalecane jest korzystanie z `dockera` pod linux'em. W przeciwnym przypadku spotkamy się z duzym narzutem maszyny wirtualnej :/
+W celu uruchamiania backendu potrzebny jest `docker` oraz `docker-compose`. Zalecane jest korzystanie z `dockera` pod linux'em. W przeciwnym przypadku spotkamy się z duzym narzutem maszyny wirtualnej :/
 
 Aby uruchomić aplikację piszemy: 
 ```

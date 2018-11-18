@@ -12,3 +12,9 @@ services:
        image: "postgres:latest"
        volumes:
            - "aplikacja-zapisowa_postgress-volume"
+       environment:
+           POSTGRES_DB: samaritan
+           POSTGRES_USER: test
+           POSTGRES_PASSWORD: test
+       ports:
+           - 5432:5432

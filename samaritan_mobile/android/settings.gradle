@@ -1,0 +1,3 @@
+rootProject.name = 'samaritan_mobile'
+
+include ':app'

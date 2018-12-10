@@ -13,17 +13,20 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 from samaritan.models import auth
 from samaritan.models import users
 from samaritan.views import base
+from samaritan.models import auth, action
+from samaritan.views import base, actions
 
 api = Api(app)
-api.add_resource(auth.UserRegistration, '/registration')
-api.add_resource(auth.UserLogin, '/login')
-api.add_resource(auth.UserLogout, '/logout')
-api.add_resource(auth.OrganisationResource, '/organisation')
-api.add_resource(auth.VolunteerResource, '/volunteer')
-
-
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return users.RevokedToken.is_jti_blacklisted(jti)
+
+api.add_resource(auth.UserRegistration, '/registration')
+api.add_resource(auth.UserLogin, '/login')
+api.add_resource(auth.UserLogout, '/logout')
+api.add_resource(auth.OrganisationResource, '/organisation')
+api.add_resource(auth.VolunteerResource, '/volunteer')
+api.add_resource(actions.ActionListView, '/actions')
+api.add_resource(actions.ActionView, '/action/<int:action_id>')

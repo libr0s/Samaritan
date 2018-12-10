@@ -9,7 +9,7 @@ class ActionSerializer(object):
         self.resource_fields = {
             'id': fields.Integer,
             'name': fields.String,
-            'organization': fields.String,
+            'organisation': fields.String,
             'points': fields.Integer,
             'end_date': fields.DateTime
         }

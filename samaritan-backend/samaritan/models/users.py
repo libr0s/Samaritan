@@ -43,6 +43,12 @@ class User(db.Model):
 class Volunteer(db.Model):
     __tablename__ = 'volunteers'
 
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(120), nullable = False)
     surname = db.Column(db.String(120), nullable = False)
@@ -57,6 +63,9 @@ class Volunteer(db.Model):
 class Organisation(db.Model):
     __tablename__ = 'organisations'
 
+    def __repr__(self):
+        return self.name
+
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(120), nullable = False)
     city = db.Column(db.String(120), nullable = False)
@@ -64,7 +73,7 @@ class Organisation(db.Model):
     adress = db.Column(db.Integer)
     user = db.Column(db.ForeignKey(User.id))
     verified = db.Column(db.Boolean, default=False)
-    actions = db.relationship('actions', backref='organisation', lazy=True)
+    actions = db.relationship('ActionModel', backref='organisation', lazy=True)
 
     def save_to_db(self):
         db.session.add(self)

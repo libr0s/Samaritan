@@ -8,7 +8,7 @@ class ParticipationModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     action_id = db.Column(
-        db.Integer, db.ForeignKey('action.id'),
+        db.Integer, db.ForeignKey('actions.id'),
         nullable=False
     )
     grade = db.Column(db.Boolean, default=False)
@@ -19,7 +19,7 @@ class ParticipationModel(db.Model):
 
     def delete(self):
         db.session.delete(self)
-        db.session.commit(self)
+        db.session.commit()
 
 
 class ActionModel(db.Model):
@@ -27,11 +27,11 @@ class ActionModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     particitpations = db.relationship(
-        'participations', backref='action', lazy=True
+        'ParticipationModel', backref='action', lazy=True
     )
     name = db.Column(db.String(255), nullable=False)
     organisation_id = db.Column(
-        db.Integer, db.ForeignKey('organisation.id'),
+        db.Integer, db.ForeignKey('organisations.id'),
         nullable=False
     )
     points = db.Column(db.Integer, nullable=False)
@@ -44,4 +44,4 @@ class ActionModel(db.Model):
 
     def delete(self):
         db.session.delete(self)
-        db.session.commit(self)
+        db.session.commit()

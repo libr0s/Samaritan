@@ -28,6 +28,22 @@ class ActionSerializer(object):
         return marshal(self.action, self.resource_fields)
 
 
+class OrganisationSerializer(object):
+
+    def __init__(self, organisation):
+        self.organisation = organisation
+        self.resource_fields = {
+            'id': fields.Integer,
+            'name': fields.String,
+            'city': fields.String,
+            'address': fields.Integer,
+            'post_code': fields.String
+        }
+
+    def serialize(self):
+        return marshal(self.organisation, self.resource_fields)
+
+
 class VolunteersSerializer(object):
 
     def __init__(self, volunteer):

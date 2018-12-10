@@ -2,6 +2,16 @@ from flask_restful import marshal, fields
 
 from samaritan.models.action import ActionModel
 
+
+class OrganisationField(fields.Raw):
+
+    def format(self, value):
+        return {
+            'name': value.name,
+            'id': value.id
+        }
+
+
 class ActionSerializer(object):
 
     def __init__(self, action):
@@ -9,7 +19,7 @@ class ActionSerializer(object):
         self.resource_fields = {
             'id': fields.Integer,
             'name': fields.String,
-            'organisation': fields.String,
+            'organisation': OrganisationField,
             'points': fields.Integer,
             'end_date': fields.DateTime
         }
@@ -17,13 +27,18 @@ class ActionSerializer(object):
     def serialize(self):
         return marshal(self.action, self.resource_fields)
 
-    def deserialize(self):
-        action_model = ActionModel(
-            name=self.action['name'],
-            organization=self.action['organization'],
-            points=self.action['points'],
-            start_date=self.action['start'],
-            end_date=self.action['end']
-        )
 
-        return action_model
+class VolunteersSerializer(object):
+
+    def __init__(self, volunteer):
+        self.volunteer = volunteer
+        self.resource_fields = {
+            'id': fields.Integer,
+            'name': fields.String,
+            'surname': fields.String,
+            'points': fields.Integer,
+            'rank': fields.String
+        }
+
+    def serialize(self):
+        return marshal(self.volunteer, self.resource_fields)

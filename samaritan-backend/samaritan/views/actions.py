@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_restful import (
     reqparse,
     abort,
@@ -32,6 +34,7 @@ class ActionView(Resource):
         a = ActionModel.query.filter_by(id=action_id).first()
         if a:
             a.delete()
+            return {'message': 'Akcje o id: {} usunieta.'.format(action_id)}, 200
         else:
             return self.non_exists()
 
@@ -45,7 +48,11 @@ class ActionListView(Resource):
     
     def get(self):
         actions = []
-        for action in ActionModel.query.all():
+        qs = ActionModel.query\
+            .filter(ActionModel.start_date <= datetime.now())\
+            .filter(ActionModel.end_date >= datetime.now())
+
+        for action in qs:
             actions.append(
                 ActionSerializer(action).serialize()
             )

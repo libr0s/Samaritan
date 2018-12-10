@@ -10,7 +10,7 @@ from samaritan.serializers import OrganisationSerializer
 
 
 class OrganisationView(Resource):
-    
+
     def get(self, organisation_id):
         o = Organisation.query.get(id=organisation_id)
 

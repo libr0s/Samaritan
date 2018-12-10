@@ -14,7 +14,12 @@ from samaritan.models import auth
 from samaritan.models import users
 from samaritan.views import base
 from samaritan.models import auth, action
-from samaritan.views import base, actions
+from samaritan.views import (
+    base,
+    actions,
+    volunteers,
+    organisations,
+)
 
 api = Api(app)
 
@@ -30,3 +35,7 @@ api.add_resource(auth.OrganisationResource, '/organisation')
 api.add_resource(auth.VolunteerResource, '/volunteer')
 api.add_resource(actions.ActionListView, '/actions')
 api.add_resource(actions.ActionView, '/action/<int:action_id>')
+api.add_resource(volunteers.VolunteerListView, '/volunteers')
+api.add_resource(volunteers.VolunteerView, '/volunteers/<int:volunteer_id>')
+api.add_resource(organisations.OrganisationListView, '/organisations')
+api.add_resource(organisations.OrganisationView, '/organisation/<int:volunteer_id>')

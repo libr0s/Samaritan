@@ -64,6 +64,7 @@ class Organisation(db.Model):
     adress = db.Column(db.Integer)
     user = db.Column(db.ForeignKey(User.id))
     verified = db.Column(db.Boolean, default=False)
+    actions = db.relationship('actions', backref='organisation', lazy=True)
 
     def save_to_db(self):
         db.session.add(self)

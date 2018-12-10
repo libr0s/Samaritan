@@ -1,8 +1,12 @@
 from .db import db
 from datetime import datetime
 import enum
+from passlib.hash import pbkdf2_sha256
 
 class UserType(enum.Enum):
+    def __str__(self):
+        return str(self.value)
+
     organisation='organisation'
     volunteer='volunteer'
 
@@ -11,13 +15,19 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(120), unique = True, nullable = False)
-    password = db.Column(db.String(120), nullable = False)
+    password = db.Column(db.String(128), nullable = False)
     date = db.Column(db.DateTime, default= datetime.now())
     type = db.Column(db.Enum(UserType))
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+    def hash_password(self,password):
+        self.password = pbkdf2_sha256.hash(password)
+
+    def verify_password(self,password):
+        return pbkdf2_sha256.verify(password,self.password)
 
     @classmethod
     def find_by_email(self, email):
@@ -58,3 +68,18 @@ class Organisation(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+# tabela przechowująca tokeny których ważność została cofnięta
+class RevokedToken(db.Model):
+    __tablename__ = 'revoked_tokens'
+    id = db.Column(db.Integer, primary_key = True)
+    jti = db.Column(db.String(120))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def is_jti_blacklisted(self, jti):
+        query = self.query.filter_by(jti = jti).first()
+        return bool(query)

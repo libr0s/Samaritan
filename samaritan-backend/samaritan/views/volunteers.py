@@ -14,13 +14,13 @@ class VolunteerView(Resource):
     def non_exists(cls):
         return {'message': 'Akcja o zadanym id nie istnieje :c'}, 404
     
-    def get(self, user_id):
-        v = Volunteer.query.get(id=id)
+    def get(self, volunteer_id):
+        v = Volunteer.query.filter_by(id=volunteer_id).first()
 
         if v:
             return VolunteersSerializer(v).serialize()
         else:
-            return {'message': 'Akcja o zadanym id nie istnieje :c'}, 404
+            return {'message': 'Wolontariusz o zadanym id nie istnieje :c'}, 404
 
 
 

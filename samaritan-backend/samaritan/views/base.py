@@ -1,4 +1,3 @@
-
 from samaritan import app
 
 @app.route('/')

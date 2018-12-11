@@ -6,7 +6,7 @@ from flask_restful import (
     Api,
     Resource,
 )
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_claims
 
 from samaritan.models.action import ActionModel
 from samaritan.models.auth import (
@@ -15,10 +15,7 @@ from samaritan.models.auth import (
 )
 from samaritan.serializers import ActionSerializer
 from samaritan.parsers.actions import action_parser
-
-
-# for testing
-from samaritan.models.users import Organisation
+from samaritan.utils import get_user_from_claim
 
 
 class ActionView(Resource):
@@ -39,9 +36,14 @@ class ActionView(Resource):
     @organisation_required
     def delete(self, action_id):
         a = ActionModel.query.filter_by(id=action_id).first()
+        claims = get_jwt_claims()
+        user = get_user_from_claim(claims)
         if a:
-            a.delete()
-            return {'message': 'Akcje o id: {} usunieta.'.format(action_id)}, 200
+            if a in user.actions:
+                a.delete()
+                return {'message': 'Akcje o id: {} usunieta.'.format(action_id)}, 200
+            else:
+                return {'message': 'To nie jest akcja twojej organizacji'}, 403
         else:
             return self.non_exists()
 
@@ -72,7 +74,8 @@ class ActionListView(Resource):
     @organisation_required
     def post(self):
         args = action_parser.parse_args()
-        o = Organisation.query.all()[0]
+        claims = get_jwt_claims()
+        o = get_user_from_claim(claims)
         a = ActionModel(
             name=args['name'],
             points=args['points'],

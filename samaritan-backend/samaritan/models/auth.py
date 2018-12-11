@@ -48,14 +48,9 @@ def volunteer_required(fn):
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
     user = User.find_by_email(identity)
-    over_user = None
-    if user.type == 'volunteer':
-        over_user = Volunteer.query.filter_by(user_id=user.id).first()
-    elif user.type == 'organisation':
-        over_user = Organisation.query.filter_by(user_id=user.id).first()
     return {
         'type': str(user.type),
-        'user': over_user,
+        'user_id': str(user.id),
     }
 
 class UserRegistration(Resource):

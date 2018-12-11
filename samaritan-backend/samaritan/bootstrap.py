@@ -32,6 +32,11 @@ def bootstrap_db():
     )
     u4.hash_password('test1234')
 
+    u1.save_to_db()
+    u2.save_to_db()
+    u3.save_to_db()
+    u4.save_to_db()
+
     v1 = Volunteer(
         name='Janek',
         surname='Testowy',
@@ -66,11 +71,6 @@ def bootstrap_db():
         user=u4.id
     )
     print('Models created')
-
-    u1.save_to_db()
-    u2.save_to_db()
-    u3.save_to_db()
-    u4.save_to_db()
 
     v1.save_to_db()
     o1.save_to_db()

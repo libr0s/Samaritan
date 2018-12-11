@@ -10,14 +10,13 @@ app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
 # app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
-from samaritan.views import base
 from samaritan.bootstrap import bootstrap_db
 from samaritan.models import auth, action
 from samaritan.views import (
-    base,
     actions,
     volunteers,
     organisations,
+    profile,
 )
 
 api = Api(app)
@@ -30,6 +29,7 @@ api = Api(app)
 api.add_resource(auth.UserRegistration, '/registration')
 api.add_resource(auth.UserLogin, '/login')
 api.add_resource(auth.UserLogout, '/logout')
+api.add_resource(profile.ProfileView, '/profile')
 api.add_resource(actions.ActionListView, '/actions')
 api.add_resource(actions.ActionView, '/action/<int:action_id>')
 api.add_resource(volunteers.VolunteerListView, '/volunteers')

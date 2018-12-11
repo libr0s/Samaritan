@@ -2,7 +2,14 @@ from functools import wraps
 from samaritan import jwt
 from flask import request,jsonify
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import (create_access_token, jwt_required, get_jwt_identity, get_raw_jwt,verify_jwt_in_request,get_jwt_claims)
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    get_raw_jwt,
+    verify_jwt_in_request,
+    get_jwt_claims
+)
 from .users import User, Volunteer, Organisation, RevokedToken
 from .forms import UserForm, VolunteerForm, OrganisationForm
 
@@ -41,7 +48,10 @@ def volunteer_required(fn):
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
     user = User.find_by_email(identity)
-    return {'type': str(user.type)}
+    return {
+        'type': str(user.type),
+        'user_id': str(user.id),
+    }
 
 class UserRegistration(Resource):
    def post(self):

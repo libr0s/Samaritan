@@ -11,7 +11,7 @@ services:
     db:
        image: "postgres:latest"
        volumes:
-           - "aplikacja-zapisowa_postgress-volume"
+           - "samaritan_postgress-volume"
        environment:
            POSTGRES_DB: samaritan
            POSTGRES_USER: test

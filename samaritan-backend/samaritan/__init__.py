@@ -32,9 +32,6 @@ def check_if_token_in_blacklist(decrypted_token):
 api.add_resource(auth.UserRegistration, '/registration')
 api.add_resource(auth.UserLogin, '/login')
 api.add_resource(auth.UserLogout, '/logout')
-# Ju pokryte widoki
-# api.add_resource(auth.OrganisationResource, '/organisation')
-# api.add_resource(auth.VolunteerResource, '/volunteer')
 api.add_resource(actions.ActionListView, '/actions')
 api.add_resource(actions.ActionView, '/action/<int:action_id>')
 api.add_resource(volunteers.VolunteerListView, '/volunteers')

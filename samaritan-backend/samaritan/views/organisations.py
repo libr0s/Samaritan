@@ -4,6 +4,7 @@ from flask_restful import (
     Api,
     Resource,
 )
+from flask_jwt_extended import jwt_required
 
 from samaritan.models.users import Organisation
 from samaritan.serializers import OrganisationSerializer
@@ -11,6 +12,7 @@ from samaritan.serializers import OrganisationSerializer
 
 class OrganisationView(Resource):
 
+    @jwt_required
     def get(self, organisation_id):
         o = Organisation.query.filter_by(id=organisation_id).first()
 
@@ -22,6 +24,7 @@ class OrganisationView(Resource):
 
 class OrganisationListView(Resource):
 
+    @jwt_required
     def get(self):
         organisations = []
 

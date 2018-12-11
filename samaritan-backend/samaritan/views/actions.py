@@ -6,8 +6,13 @@ from flask_restful import (
     Api,
     Resource,
 )
+from flask_jwt_extended import jwt_required
 
 from samaritan.models.action import ActionModel
+from samaritan.models.auth import (
+    volunteer_required,
+    organisation_required,
+)
 from samaritan.serializers import ActionSerializer
 from samaritan.parsers.actions import action_parser
 
@@ -22,6 +27,7 @@ class ActionView(Resource):
     def non_exists(cls):
         return {'message': 'Akcja o zadanym id nie istnieje :c'}, 404
 
+    @jwt_required
     def get(self, action_id):
         a = ActionModel.query.filter_by(id=action_id).first()
 
@@ -30,6 +36,7 @@ class ActionView(Resource):
         else:
             return self.non_exists()
 
+    @organisation_required
     def delete(self, action_id):
         a = ActionModel.query.filter_by(id=action_id).first()
         if a:
@@ -38,6 +45,8 @@ class ActionView(Resource):
         else:
             return self.non_exists()
 
+    # TODO
+    @organisation_required
     def put(self, action_id):
         args = action_parser.aprse_args()
 
@@ -46,6 +55,7 @@ class ActionView(Resource):
 
 class ActionListView(Resource):
     
+    @jwt_required
     def get(self):
         actions = []
         qs = ActionModel.query\
@@ -59,6 +69,7 @@ class ActionListView(Resource):
 
         return actions
 
+    @organisation_required
     def post(self):
         args = action_parser.parse_args()
         o = Organisation.query.all()[0]

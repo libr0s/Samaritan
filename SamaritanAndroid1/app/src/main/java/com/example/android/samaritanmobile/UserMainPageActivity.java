@@ -1,0 +1,55 @@
+package com.example.android.samaritanmobile;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+/**
+ * Created by Paulina on 11.12.2018.
+ */
+public class UserMainPageActivity extends AppCompatActivity {
+
+
+    private ImageView avatar;
+    private TextView nameTV, surnameTV, pointsTV, actionsTV, descriptionTV;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_main_page);
+        setUserData();
+    }
+
+    public void rowClick(View view) {
+        switch(view.getId()) {
+            case R.id.table_row_messages:
+                startActivity(new Intent(UserMainPageActivity.this, MessagesActivity.class));
+                break;
+            case R.id.table_row_my_actions:
+                startActivity(new Intent(UserMainPageActivity.this, UserActionsActivity.class));
+                break;
+            case R.id.table_row_organisations:
+                startActivity(new Intent(UserMainPageActivity.this, OrganizationsSearchActivity.class));
+                break;
+            case R.id.table_row_find_actions:
+                startActivity(new Intent(UserMainPageActivity.this, FindActionsActivity.class));
+                break;
+        }
+
+
+    }
+
+    public void setUserData(){
+        avatar = findViewById(R.id.ivProfile);
+        nameTV = findViewById(R.id.tvName);
+        surnameTV = findViewById(R.id.tvSurname);
+        pointsTV = findViewById(R.id.tvPoints);
+        actionsTV = findViewById(R.id.tvActions);
+        descriptionTV = findViewById(R.id.tvDescription);
+
+        //TODO load data from backend
+    }
+}

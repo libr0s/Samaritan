@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SamaritanMobile</string>
+    <string name="email">e-mail</string>
+    <string name="password">hasło</string>
+    <string name="login">login</string>
+    <string name="name">imię</string>
+    <string name="surname">nazwisko</string>
+    <string name="logInButtonText">ZALOGUJ</string>
+    <string name="comeBackButtonText">POWRÓT</string>
+    <string name="signUuButtonText">ZAŁÓŻ KONTO</string>
+    <string name="points">Punkty</string>
+    <string name="actions">Akcje</string>
+    <string name="messages">Wiadomości</string>
+    <string name="myActions">Moje akcje</string>
+    <string name="organizations">Organizacje</string>
+    <string name="findAction">Znajdź akcję</string>
+    <string name="profileSettings">Ustawienia profilu</string>
+    <string name="joinActionButtonText">Zgłoś się!</string>
+    <string name="YourActions">Odbyte przez Ciebię akcje:</string>
+    <string name="AvailableActions">Dostępne akcje:</string>
+    <string name="SenDMessage">Wyślij wiadomość</string>
+    <string name="Send">Wyślij</string>
+    <string name="YourMessages">Wiadomości:</string>
+    <string name="Respond">Odpowiedz</string>
+
+</resources>

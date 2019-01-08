@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvActionName"
+        android:layout_margin="10dp"
+        android:text="ActionName"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvActionDate"
+        android:layout_margin="10dp"
+        android:text="12-12-2018"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvActionDescription"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="description "/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bttnJoinAction"
+        android:text="@string/joinActionButtonText"
+        android:padding="10dp"/>
+
+
+</LinearLayout>

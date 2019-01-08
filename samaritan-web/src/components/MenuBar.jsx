@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core';
+import {AppBar, IconButton, Toolbar, Typography} from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import LockIcon from '@material-ui/icons/Lock';
@@ -46,13 +46,13 @@ class MenuBar extends React.Component {
         } else {
             logIconButton = <IconButton color="inherit" component={LoginLink}>
                                 <LockIcon />
-                            </IconButton> 
+                            </IconButton>
         }
 
         return(
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar 
+                <AppBar
                     position="absolute"
                     className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
                 >

@@ -27,7 +27,7 @@ const styles = theme => ({
     },
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 16,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -63,7 +63,7 @@ class LoginRoute extends React.Component {
   onSubmit = (e) => {
     const {email, password} = this.state;
     this.props.onLoginAction(e, email, password)
-  
+
     e.preventDefault();
   }
 
@@ -81,7 +81,7 @@ class LoginRoute extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <main className={classes.layout}> 
+        <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockIcon />

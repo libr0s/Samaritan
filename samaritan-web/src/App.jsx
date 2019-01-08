@@ -5,10 +5,10 @@ import ProfileRoute from './components/ProfileRoute';
 import AboutRoute from './components/AboutRoute';
 import MenuBar from './components/MenuBar';
 
-import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 
 class App extends React.Component {
-  
+
   constructor(props) {
     super(props);
 
@@ -22,7 +22,7 @@ class App extends React.Component {
       method: 'POST',
       headers:{
         'Accept': 'application/json',
-        'Content-Type': 'application/json', 
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email: email,
@@ -42,7 +42,7 @@ class App extends React.Component {
       });
     })
     .catch( a => { console.log(a) });
-    
+
   }
 
   onLogoutAction = (e) => {
@@ -63,7 +63,7 @@ class App extends React.Component {
       this.setState({
         loggedIn: false,
       });
-     
+
     });
   }
 
@@ -79,19 +79,19 @@ class App extends React.Component {
           path="/register"
           component={RegisterRoute}
         />
-        <Route 
-          path="/login" 
-          render={() => (loggedIn ? (<Redirect to="/profile" />) : (<LoginRoute onLoginAction={this.onLoginAction} />)) } 
+        <Route
+          path="/login"
+          render={() => (loggedIn ? (<Redirect to="/profile" />) : (<LoginRoute onLoginAction={this.onLoginAction} />)) }
         />
         <Route
-          path="/profile" 
+          path="/profile"
           render={() => (loggedIn ? <ProfileRoute /> : <Redirect to="/" />)}
         />
         <Route
           path="/about"
           component={AboutRoute}
         />
-        
+
         </div>
       </Router>
     );

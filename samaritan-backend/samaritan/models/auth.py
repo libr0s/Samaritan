@@ -1,5 +1,4 @@
 from functools import wraps
-from samaritan import jwt
 from flask import request,jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (
@@ -12,6 +11,7 @@ from flask_jwt_extended import (
 )
 from .users import User, Volunteer, Organisation, RevokedToken
 from .forms import UserForm, VolunteerForm, OrganisationForm
+from .db import jwt
 
 parser = reqparse.RequestParser()
 parser.add_argument('type', required=True, help='Blank Type!')
@@ -19,6 +19,12 @@ parser.add_argument('type', required=True, help='Blank Type!')
 login_parser = reqparse.RequestParser()
 login_parser.add_argument('email', required=True, help='Blank Type!')
 login_parser.add_argument('password', required=True, help='Blank Type!')
+
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return RevokedToken.is_jti_blacklisted(jti)
 
 # decorator dający dostęp tylko użytkownikom z kontami organizacji i ważnymi tokenami
 def organisation_required(fn):

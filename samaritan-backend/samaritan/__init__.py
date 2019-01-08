@@ -1,14 +1,9 @@
 from flask import Flask
 from flask_restful import Api
-from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
-jwt = JWTManager(app)
 
 app.config['SECRET_KEY'] = "klucz do wygenerowania"
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
-# app.config['JWT_BLACKLIST_ENABLED'] = True
-app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
 from samaritan.bootstrap import bootstrap_db
 from samaritan.models import auth, action
@@ -20,11 +15,6 @@ from samaritan.views import (
 )
 
 api = Api(app)
-
-# @jwt.token_in_blacklist_loader
-# def check_if_token_in_blacklist(decrypted_token):
-#     jti = decrypted_token['jti']
-#     return users.RevokedToken.is_jti_blacklisted(jti)
 
 api.add_resource(auth.UserRegistration, '/registration')
 api.add_resource(auth.UserLogin, '/login')

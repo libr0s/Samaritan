@@ -1,10 +1,9 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {Paper, CssBaseline, Typography} from '@material-ui/core';
+import {CssBaseline, Paper, Typography} from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Chip from "@material-ui/core/Chip/Chip";
-import GradeIcon from '@material-ui/icons/Grade';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 import TimeAgo from 'react-timeago';
 import {Planet} from 'react-kawaii';
 
@@ -25,7 +24,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 2,
         marginBottom: theme.spacing.unit * 2,
     },
-    rankContainer: {
+    cityContainer: {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
@@ -48,7 +47,7 @@ class ProfileRoute extends React.Component {
             name: '',
             surname: '',
             points: 0,
-            rank: '',
+            city: '',
             action: {
                 name: '',
                 end_date: '',
@@ -79,8 +78,8 @@ class ProfileRoute extends React.Component {
                 this.setState({
                     name: json.name,
                     surname: json.surname,
-                    points: json.points,
-                    rank: json.rank,
+                    city: json.city,
+                    code: json.post_code,
                 });
             }).then(() => {
 
@@ -110,7 +109,7 @@ class ProfileRoute extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {quoute, action, name, surname, points, rank} = this.state;
+        const {quoute, action, name, city, code} = this.state;
 
         return (
             <React.Fragment>
@@ -122,15 +121,14 @@ class ProfileRoute extends React.Component {
                         alt={name}
                         src={"https://static.goldenline.pl/user_photo/093/user_4527709_e860d3_huge.jpg"}/>
                     <Typography variant="h4">
-                        {`${name} ${surname}`}
+                        {name}
                     </Typography>
-                    <div className={classes.rankContainer}>
-                        <Chip color={"primary"} avatar={<Avatar><GradeIcon/></Avatar>} label={rank}/>
-                        <Chip color={"primary"} avatar={<Avatar><AssessmentIcon/></Avatar>} label={`${points} pkt`}/>
+                    <div className={classes.cityContainer}>
+                        <Chip color={"primary"} avatar={<Avatar><LocationCityIcon/></Avatar>} label={`${city}, ${code}`}/>
                     </div>
                     <div className={classes.action}>
                         <Typography>
-                            {action.name} organised by {action.organisation.name} which you participate in, ends in <TimeAgo date={action.end_date}/>. Do your best!
+                            {action.name} which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!
                         </Typography>
                     </div>
                 </Paper>

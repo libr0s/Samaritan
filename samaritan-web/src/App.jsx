@@ -6,6 +6,7 @@ import AboutRoute from './components/AboutRoute';
 import MenuBar from './components/MenuBar';
 
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+import ActionsRoute from "./components/ActionsRoute";
 
 class App extends React.Component {
 
@@ -64,7 +65,7 @@ class App extends React.Component {
 
             });
         localStorage.removeItem('access_token');
-    }
+    };
 
     render() {
         const {loggedIn} = this.state;
@@ -91,7 +92,11 @@ class App extends React.Component {
                         path="/about"
                         component={AboutRoute}
                     />
-
+                    <Route
+                        exact
+                        path="/actions"
+                        component={ActionsRoute}
+                    />
                 </div>
             </Router>
         );

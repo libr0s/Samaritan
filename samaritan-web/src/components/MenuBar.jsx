@@ -1,73 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core';
-
-import MenuIcon from '@material-ui/icons/Menu';
-import LockIcon from '@material-ui/icons/Lock';
+import {AppBar, IconButton, Toolbar, Typography} from '@material-ui/core';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InfoIcon from '@material-ui/icons/Info';
 import PersonIcon from '@material-ui/icons/Person';
+import Button from "@material-ui/core/Button/Button";
 
 const styles = theme => ({
     toolbarButtons: {
         marginLeft: 'auto',
+        '& > a': {
+            margin: theme.spacing.unit,
+        }
       },
 });
 
-const LoginLink = (props) => <Link to="/login" {...props} />
-const AboutLink = (props) => <Link to="/about" {...props} />
-const ProfileLink = (props) => <Link to="/profile" {...props} />
+const LoginLink = (props) => <Link to="/login" {...props} />;
+const AboutLink = (props) => <Link to="/about" {...props} />;
+const ProfileLink = (props) => <Link to="/profile" {...props} />;
+const ActionsLink = (props) => <Link to="/actions" {...props} />;
 
 class MenuBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            open: true,
-        };
-    }
 
     render() {
         const { classes, loggedIn } = this.props;
         let logIconButton, profileIconButton;
+        const myActionsButton = <Button variant={"outlined"} color="inherit" component={ActionsLink}>Events</Button>;
 
         if (loggedIn) {
             logIconButton = <IconButton color="inherit" onClick={this.props.onLogoutAction}>
                                 <LockOpenIcon />
-                            </IconButton>
+                            </IconButton>;
             profileIconButton = <IconButton color="inherit" component={ProfileLink}>
                                 <PersonIcon />
-                            </IconButton>
+                            </IconButton>;
         } else {
-            logIconButton = <IconButton color="inherit" component={LoginLink}>
-                                <LockIcon />
-                            </IconButton> 
+            logIconButton = <Button variant={"outlined"} color="inherit" component={LoginLink}>
+                                Sign In
+                            </Button>;
         }
 
         return(
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar 
+                <AppBar
                     position="absolute"
-                    className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+                    className={classNames(classes.appBar)}
                 >
-                    <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.handleDrawerOpen}
-                            className={classNames(
-                                classes.menuButton,
-                                this.state.open && classes.menuButtonHidden,
-                            )}
-                        >
-                        <MenuIcon />
-                        </IconButton>
+                    <Toolbar className={classes.toolbar}>
                         <Typography
                             component="h1"
                             variant="h6"
@@ -82,6 +67,7 @@ class MenuBar extends React.Component {
                         </IconButton>
                         <div className={classes.toolbarButtons}>
                             {profileIconButton}
+                            {myActionsButton}
                             {logIconButton}
                         </div>
                     </Toolbar>

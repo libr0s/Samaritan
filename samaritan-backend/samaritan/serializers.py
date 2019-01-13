@@ -12,6 +12,18 @@ class OrganisationField(fields.Raw):
         }
 
 
+class GeoField(fields.Raw):
+
+    def format(self, value):
+        return {
+            'name': value.name,
+            'address': value.address,
+            'lat': value.lat,
+            'lng': value.lng,
+            'type': value.type,
+        }
+
+
 class ActionSerializer(object):
 
     def __init__(self, action):
@@ -20,8 +32,9 @@ class ActionSerializer(object):
             'id': fields.Integer,
             'name': fields.String,
             'organisation': OrganisationField,
+            'geo_loc': GeoField,
             'points': fields.Integer,
-            'end_date': fields.DateTime
+            'end_date': fields.DateTime,
         }
 
     def serialize(self):

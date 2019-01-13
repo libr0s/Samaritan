@@ -31,12 +31,16 @@ class ActionModel(db.Model):
     )
     name = db.Column(db.String(255), nullable=False)
     organisation_id = db.Column(
-        db.Integer, db.ForeignKey('organisations.id'),
-        nullable=False
+        db.Integer, db.ForeignKey('organisations.id')
     )
     points = db.Column(db.Integer, nullable=False)
     start_date = db.Column(db.DateTime, default= datetime.now())
     end_date = db.Column(db.DateTime, nullable=False)
+
+    geo_loc_id = db.Column(db.Integer, db.ForeignKey('geomarkers.id'))
+    geo_loc = db.relationship(
+        'GeoMarkerModel', backref=db.backref('action', uselist=False), lazy=True
+    )
 
     def save_to_db(self):
         db.session.add(self)

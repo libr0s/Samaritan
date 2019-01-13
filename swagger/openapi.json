@@ -1,414 +1,328 @@
-{
-    "swagger": "2.0",
-    "info": {
-      "description": "Dokumentacja api naszego projektu zawierająca specyfikacje danych endpointów",
-      "version": "1.0.0",
-      "title": "Samaritan - dokumentacja api"
-    },
-    "host": "127.0.0.1:8000",
-    "schemes": [
-      "http"
-    ],
-    "paths": {
-      "/registration": {
-        "post": {
-          "summary": "Rejestracja nowego użytkownika",
-          "consumes": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "Konto wolontariusza",
-              "in": "body",
-              "description": "Dane wolonatriusza, którego konto chcemy stworzyć",
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "volunteer"
-                    ]
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "surname": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            {
-              "name": "Konto organizacji",
-              "in": "body",
-              "description": "Dane organizacji, której konto chcemy stworzyć",
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "organization"
-                    ]
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "post_code": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "użytkownik został utworzony"
-            },
-            "400": {
-              "description": "dane użytkownika nie są poprawne",
-              "schema": {
-                "$ref": "#/definitions/GrandParent"
-              }
-            }
-          }
-        },
-        "get": {
-          "summary": "Tymczasowe zwrócenie danych wszystkich użytkowników",
-          "responses": {
-            "200": {
-              "description": "poprawne zwrócenie danych"
-            }
-          }
-        }
-      },
-      "/login": {
-        "post": {
-          "summary": "Logowanie użytkownika",
-          "consumes": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "Logowanie użytkownika",
-              "in": "body",
-              "description": "Dane użytkownika do logowania",
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "użytkownik zalogowany poprawnie",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "Successfully logged in"
-                    ]
-                  },
-                  "access_token": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "dane użytkownika nie są poprawne"
-            }
-          }
-        }
-      },
-      "/logout": {
-        "post": {
-          "summary": "Wylogowywanie użytkownika",
-          "responses": {
-            "200": {
-              "description": "użytkownik wylogowany poprawnie"
-            },
-            "500": {
-              "description": "użytkownik nie został wylogowany, błąd serwera"
-            }
-          }
-        }
-      },
-      "/profile": {
-        "get": {
-          "summary": "Profil użytkownika",
-          "responses": {
-            "200": {
-              "description": "Profil użytkownika bądź organizacji",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "enum": [
-                      1
-                    ]
-                  },
-                  "name": {
-                    "type": "string",
-                    "enum": [
-                      "Janek"
-                    ]
-                  },
-                  "surname": {
-                    "type": "string",
-                    "enum": [
-                      "Testowy"
-                    ]
-                  },
-                  "points": {
-                    "type": "integer",
-                    "enum": [
-                      0
-                    ]
-                  },
-                  "rank": {
-                    "type": "string",
-                    "enum": [
-                      "Jamnik"
-                    ]
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Brak tokenu autoryzacyjnego"
-            },
-            "500": {
-              "description": "Nie można zwrócić profilu, błąd serwera"
-            }
-          }
-        }
-      },
-      "/actions": {
-        "get": {
-          "summary": "Ogólna obsługa akcji",
-          "responses": {
-            "200": {
-              "description": "Lista wszystkich akcji, jako tablica"
-            }
-          }
-        },
-        "post": {
-          "summary": "Dodawanie nowych akcji",
-          "responses": {
-            "201": {
-              "description": "Akcja stworzona",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "Stowrzono akcje id: 1"
-                    ]
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Błąd serwera",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "Blad serwera"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/action/{id_akcji}": {
-        "get": {
-          "summary": "Pobranie akcji o numerze",
-          "responses": {
-            "200": {
-              "description": "Zwrócona akcja o zadanym ip",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "enum": [
-                      1
-                    ]
-                  },
-                  "name": {
-                    "type": "string",
-                    "enum": [
-                      "akcja testowa"
-                    ]
-                  },
-                  "organisation": {
-                    "type": "string",
-                    "enum": [
-                      "Organizacja jamnik"
-                    ]
-                  },
-                  "points": {
-                    "type": "integer",
-                    "enum": [
-                      120
-                    ]
-                  },
-                  "date": {
-                    "type": "string",
-                    "enum": [
-                      "2018-01-27"
-                    ]
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Nie znaleziono akcji",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "integer",
-                    "enum": [
-                      "Akcja o zadanym id nie istnieje :c"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "summary": "Usuwanie akcji",
-          "responses": {
-            "200": {
-              "description": "Akcja stworzona",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "Akcje o id: 1 usunieta."
-                    ]
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "Próba usunięcia nie swojej akcji",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "To nie jest akcja twojej organizacji"
-                    ]
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Błąd serwera",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "enum": [
-                      "Blad serwera"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "definitions": {
-      "GrandParent": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "$ref": "#/definitions/message"
-          }
-        }
-      },
-      "message": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "Not a valid email"
-              ]
-            }
-          },
-          "name": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "Not a valid name"
-              ]
-            }
-          },
-          "post_code": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "Not a valid post code"
-              ]
-            }
-          }
-        }
-      }
-    }
-  }
+swagger: '2.0'
+info:
+  description: Dokumentacja api naszego projektu zawierająca specyfikacje danych endpointów
+  version: 1.0.0
+  title: Samaritan - dokumentacja api
+host: '127.0.0.1:8000'
+schemes:
+  - http
+paths:
+  /registration:
+    post:
+      summary: Rejestracja nowego użytkownika
+      consumes:
+        - application/json
+      parameters:
+        - name: Konto wolontariusza
+          in: body
+          description: 'Dane wolonatriusza, którego konto chcemy stworzyć'
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              type:
+                type: string
+                enum:
+                  - volunteer
+              email:
+                type: string
+              password:
+                type: string
+              name:
+                type: string
+              surname:
+                type: string
+        - name: Konto organizacji
+          in: body
+          description: 'Dane organizacji, której konto chcemy stworzyć'
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              type:
+                type: string
+                enum:
+                  - organization
+              email:
+                type: string
+              password:
+                type: string
+              name:
+                type: string
+              city:
+                type: string
+              post_code:
+                type: string
+      responses:
+        '200':
+          description: użytkownik został utworzony
+        '400':
+          description: dane użytkownika nie są poprawne
+          schema:
+            $ref: '#/definitions/GrandParent'
+    get:
+      summary: Tymczasowe zwrócenie danych wszystkich użytkowników
+      responses:
+        '200':
+          description: poprawne zwrócenie danych
+  /login:
+    post:
+      summary: Logowanie użytkownika
+      consumes:
+        - application/json
+      parameters:
+        - name: Logowanie użytkownika
+          in: body
+          description: Dane użytkownika do logowania
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: użytkownik zalogowany poprawnie
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Successfully logged in
+              access_token:
+                type: string
+        '400':
+          description: dane użytkownika nie są poprawne
+  /logout:
+    post:
+      summary: Wylogowywanie użytkownika
+      responses:
+        '200':
+          description: użytkownik wylogowany poprawnie
+        '500':
+          description: 'użytkownik nie został wylogowany, błąd serwera'
+  /profile:
+    get:
+      summary: Profil użytkownika
+      responses:
+        '200':
+          description: Profil użytkownika bądź organizacji
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                enum:
+                  - 1
+              name:
+                type: string
+                enum:
+                  - Janek
+              surname:
+                type: string
+                enum:
+                  - Testowy
+              points:
+                type: integer
+                enum:
+                  - 0
+              rank:
+                type: string
+                enum:
+                  - Jamnik
+        '400':
+          description: Brak tokenu autoryzacyjnego
+        '500':
+          description: 'Nie można zwrócić profilu, błąd serwera'
+  /actions:
+    get:
+      summary: Ogólna obsługa akcji
+      responses:
+        '200':
+          description: 'Lista wszystkich akcji, jako tablica'
+    post:
+      summary: Dodawanie nowych akcji
+      responses:
+        '201':
+          description: Akcja stworzona
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - 'Stowrzono akcje id: 1'
+        '500':
+          description: Błąd serwera
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Blad serwera
+  '/action/{id_akcji}':
+    get:
+      summary: Pobranie akcji o numerze
+      responses:
+        '200':
+          description: Zwrócona akcja o zadanym ip
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                enum:
+                  - 1
+              name:
+                type: string
+                enum:
+                  - akcja testowa
+              organisation:
+                type: string
+                enum:
+                  - Organizacja jamnik
+              points:
+                type: integer
+                enum:
+                  - 120
+              date:
+                type: string
+                enum:
+                  - '2018-01-27'
+        '404':
+          description: Nie znaleziono akcji
+          schema:
+            type: object
+            properties:
+              message:
+                type: integer
+                enum:
+                  - 'Akcja o zadanym id nie istnieje :c'
+    put:
+      summary: Usuwanie akcji
+      parameters:
+        - in: body
+          name: body
+          description: Pet object that needs to be added to the store
+          required: false
+          schema:
+            $ref: "#/definitions/Pet"
+      responses:
+        '200':
+          description: Akcja stworzona
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - 'Akcje o id: 1 zmodyfikowana.'
+        '403':
+          description: Próba usunięcia nie swojej akcji
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - To nie jest akcja twojej organizacji
+        '500':
+          description: Błąd serwera
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Blad serwera
+    delete:
+      summary: Usuwanie akcji
+      responses:
+        '200':
+          description: Akcja stworzona
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - 'Akcje o id: 1 usunieta.'
+        '403':
+          description: Próba usunięcia nie swojej akcji
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - To nie jest akcja twojej organizacji
+        '500':
+          description: Błąd serwera
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Blad serwera
+definitions:
+  GrandParent:
+    type: object
+    properties:
+      message:
+        $ref: '#/definitions/message'
+  Action:
+    properties:
+      name:
+        type: string
+      points:
+        type: integer
+        format: int64
+      start_date:
+        type: string
+        format: date
+      end_date:
+        type: string
+        format: date
+      geo:
+        $ref: '#/definitions/GeoLoc'
+  GeoLoc:
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+      type:
+        type: string
+      lat:
+        type: float
+      lng:
+        type: float
+  message:
+    type: object
+    properties:
+      email:
+        type: array
+        items:
+          type: string
+          enum:
+            - Not a valid email
+      name:
+        type: array
+        items:
+          type: string
+          enum:
+            - Not a valid name
+      post_code:
+        type: array
+        items:
+          type: string
+          enum:
+            - Not a valid post code

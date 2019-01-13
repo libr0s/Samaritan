@@ -16,7 +16,7 @@ from samaritan.models.auth import (
 from samaritan.models.geo_marker import GeoMarkerModel
 from samaritan.models.users import Organisation
 from samaritan.serializers import ActionSerializer
-from samaritan.parsers.actions import action_parser
+from samaritan.parsers.actions import action_parser, action_update_parser
 from samaritan.utils import get_user_from_claim
 
 
@@ -49,12 +49,23 @@ class ActionView(Resource):
         else:
             return self.non_exists()
 
-    # TODO
     @organisation_required
     def put(self, action_id):
-        args = action_parser.aprse_args()
+        args = action_update_parser.parse_args()
 
-        return {}
+        a = ActionModel.query.filter_by(id=action_id).first()
+        claims = get_jwt_claims()
+        user = get_user_from_claim(claims)
+        if a:
+            if a in user.actions:
+                for atr, val in args.items():
+                    setattr(a, atr, val)
+                a.save_to_db()
+                return {'message': 'Akcje o id: {} zmodyfikowana.'.format(action_id)}, 200
+            else:
+                return {'message': 'To nie jest akcja twojej organizacji'}, 403
+        else:
+            return self.non_exists()
 
 
 class ActionListView(Resource):

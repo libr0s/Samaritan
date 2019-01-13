@@ -13,6 +13,8 @@ from samaritan.models.auth import (
     volunteer_required,
     organisation_required,
 )
+from samaritan.models.geo_marker import GeoMarkerModel
+from samaritan.models.users import Organisation
 from samaritan.serializers import ActionSerializer
 from samaritan.parsers.actions import action_parser
 from samaritan.utils import get_user_from_claim
@@ -60,7 +62,14 @@ class ActionListView(Resource):
     @jwt_required
     def get(self):
         actions = []
-        qs = ActionModel.query\
+
+        claims = get_jwt_claims()
+        user = get_user_from_claim(claims)
+
+        if isinstance(user, Organisation):
+            qs = ActionModel.query.filter(ActionModel.organisation_id==user.id)
+        else:
+            qs = ActionModel.query\
             .filter(ActionModel.start_date <= datetime.now())\
             .filter(ActionModel.end_date >= datetime.now())
 
@@ -76,10 +85,12 @@ class ActionListView(Resource):
         args = action_parser.parse_args()
         claims = get_jwt_claims()
         o = get_user_from_claim(claims)
+        g = GeoMarkerModel(**args['geo'])
         a = ActionModel(
             name=args['name'],
             points=args['points'],
             end_date=args['end_date'],
+            geo_loc=g,
         )
 
         if args.get('start_date'):

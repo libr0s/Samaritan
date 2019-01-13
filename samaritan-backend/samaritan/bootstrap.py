@@ -3,6 +3,7 @@ import datetime
 from samaritan.models.db import db
 from samaritan.models.users import Organisation, Volunteer, User
 from samaritan.models.action import ActionModel, ParticipationModel
+from samaritan.models.geo_marker import GeoMarkerModel
 
 def bootstrap_db():
     print('Drop DB')
@@ -77,22 +78,33 @@ def bootstrap_db():
     o2.save_to_db()
     o3.save_to_db()
 
+    g = GeoMarkerModel(
+        name = 'Testowa lokacja',
+        address = 'Jamnikowa 15',
+        lat = 1.69,
+        lng = -1.69,
+        type = 'Lokalizacja',
+    )
+
     print('Creating actions')
     a1 = ActionModel(
         name='Akcja 1',
         points=12,
-        end_date=datetime.date(2019, 12, 24)
+        end_date=datetime.date(2019, 12, 24),
+        geo_loc = g,
     )
     a2 = ActionModel(
         name='Akcja 2',
         points=24,
-        end_date=datetime.date(2019, 12, 31)
+        end_date=datetime.date(2019, 12, 31),
+        geo_loc = g,
     )
     a3 = ActionModel(
         name='Sylwester',
         points=2018,
         start_date=datetime.date(2018, 12, 31),
-        end_date=datetime.date(2019, 1, 1)
+        end_date=datetime.date(2019, 1, 1),
+        geo_loc = g,
     )
 
     o1.actions.extend([a1, a2])

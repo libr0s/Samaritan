@@ -14,6 +14,9 @@ import Chip from "@material-ui/core/Chip/Chip";
 import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
 import Spinner from "./Spinner";
+import InfoIcon from '@material-ui/icons/MoreHoriz';
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -42,6 +45,8 @@ const reqHeaders = new Headers({
     'Content-Type': 'application/json',
     'Authorization': token
 });
+
+const ActionLink = (props) => <Link to={`/actions/${props.id}`} {...props} />;
 
 class ActionsRoute extends React.Component {
 
@@ -104,7 +109,12 @@ class ActionsRoute extends React.Component {
                                     className={classes.panelSummary}
                                     expandIcon={<ExpandMoreIcon/>}>
                                     <div>
-                                        <Typography className={classes.heading}>{action.name}</Typography>
+                                        <Typography className={classes.heading}>{action.name} <Link to={`/actions/${action.id}`} style={{}}>
+                                            <IconButton color={"primary"}>
+                                                <InfoIcon/>
+                                            </IconButton>
+                                        </Link></Typography>
+
                                         <Typography
                                             className={classes.secondaryHeading}>{action.organisation.name}</Typography>
                                     </div>

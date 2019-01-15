@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip/Chip";
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import TimeAgo from 'react-timeago';
 import {Planet} from 'react-kawaii';
+import Spinner from "./Spinner";
 
 const styles = theme => ({
     paper: {
@@ -54,6 +55,7 @@ class ProfileRoute extends React.Component {
                 organisation: '',
             },
             quoute: '',
+            fetching: true,
         };
     }
 
@@ -104,6 +106,7 @@ class ProfileRoute extends React.Component {
             .then(json => {
                 console.log(json);
                 this.setState({quoute: json.slip.advice});
+                this.setState({fetching: false});
             });
     };
 
@@ -112,33 +115,42 @@ class ProfileRoute extends React.Component {
         const {quoute, action, name, city, code} = this.state;
 
         return (
-            <React.Fragment>
-                <CssBaseline/>
-                <Paper
-                    className={classes.paper}>
-                    <Avatar
-                        className={classes.avatar}
-                        alt={name}
-                        src={"https://static.goldenline.pl/user_photo/093/user_4527709_e860d3_huge.jpg"}/>
-                    <Typography variant="h4">
-                        {name}
-                    </Typography>
-                    <div className={classes.cityContainer}>
-                        <Chip color={"primary"} avatar={<Avatar><LocationCityIcon/></Avatar>} label={`${city}, ${code}`}/>
-                    </div>
-                    <div className={classes.action}>
-                        <Typography>
-                            {action.name} which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!
+            this.state.fetching
+                ? <Spinner/>
+                : <React.Fragment>
+                    <CssBaseline/>
+                    <Paper
+                        className={classes.paper}>
+                        <Avatar
+                            className={classes.avatar}
+                            alt={name}
+                            src={"https://static.goldenline.pl/user_photo/093/user_4527709_e860d3_huge.jpg"}/>
+                        <Typography variant="h4">
+                            {name}
+                        </Typography>
+                        <div className={classes.cityContainer}>
+                            <Chip color={"primary"} avatar={<Avatar><LocationCityIcon/></Avatar>}
+                                  label={`${city}, ${code}`}/>
+                        </div>
+                        <div className={classes.action}>
+                            <Typography>
+                                {action.name} which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!
+                            </Typography>
+                        </div>
+                    </Paper>
+                    <div style={{
+                        textAlign: 'center',
+                        display: 'flex',
+                        alignContent: 'center',
+                        flexDirection: 'column',
+                        marginTop: '2em'
+                    }}>
+                        <Planet size={120} mood="happy" color="#1133AF"/>
+                        <Typography variant={"body2"}>
+                            {quoute}...
                         </Typography>
                     </div>
-                </Paper>
-                <div style={{textAlign: 'center', display: 'flex', alignContent: 'center', flexDirection: 'column', marginTop: '2em'}}>
-                    <Planet size={120} mood="happy" color="#1133AF" />
-                    <Typography variant={"body2"}>
-                        {quoute}...
-                    </Typography>
-                </div>
-            </React.Fragment>
+                </React.Fragment>
         );
     }
 }

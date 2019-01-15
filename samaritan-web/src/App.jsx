@@ -7,6 +7,7 @@ import MenuBar from './components/MenuBar';
 
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import ActionsRoute from "./components/ActionsRoute";
+import SingleActionRoute from "./components/SingleActionRoute";
 
 class App extends React.Component {
 
@@ -89,13 +90,17 @@ class App extends React.Component {
                         render={() => (loggedIn ? <ProfileRoute/> : <Redirect to="/login"/>)}
                     />
                     <Route
-                        path="/about"
-                        component={AboutRoute}
-                    />
-                    <Route
                         exact
                         path="/actions"
-                        component={ActionsRoute}
+                        render={() => (loggedIn ? (<ActionsRoute/>) : <Redirect to="/login"/>)}
+                    />
+                    <Route
+                        path="/actions/:id"
+                        render={({match}) => (loggedIn ? (<SingleActionRoute id={match.params.id}/>) : <Redirect to="/login"/>)}
+                    />
+                    <Route
+                        path="/about"
+                        component={AboutRoute}
                     />
                 </div>
             </Router>

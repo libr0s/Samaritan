@@ -5,10 +5,13 @@ import CardActions from "@material-ui/core/CardActions/CardActions";
 import Button from "@material-ui/core/Button/Button";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
-import CardMedia from "@material-ui/core/CardMedia/CardMedia";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import Card from "@material-ui/core/Card/Card";
 import Spinner from "./Spinner";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Chip from "@material-ui/core/Chip/Chip";
 
 const styles = theme => ({
     root: {
@@ -17,7 +20,9 @@ const styles = theme => ({
         justifyContent: 'center',
         marginTop: 14 * theme.spacing.unit,
     },
-    card: {},
+    card: {
+        maxWidth: '80vw',
+    },
     media: {
         height: 140,
     },
@@ -28,6 +33,14 @@ const reqHeaders = new Headers({
     'Content-Type': 'application/json',
     'Authorization': token
 });
+
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+    <GoogleMap
+        defaultZoom={8}
+        defaultCenter={{ lat: props.lat, lng: props.lng}}
+    >
+        {<Marker position={{ lat: props.lat, lng: props.lng}} />}
+    </GoogleMap>));
 
 class SingleActionRoute extends React.Component {
 
@@ -66,27 +79,36 @@ class SingleActionRoute extends React.Component {
                 : <div className={classes.root}>
                     <Card className={classes.card}>
                         <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="/static/images/cards/contemplative-reptile.jpg"
-                                title="Contemplative Reptile"
-                            />
+                            <MyMapComponent
+                                googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                                loadingElement={<div style={{ height: `100%` }} />}
+                                containerElement={<div style={{ height: `400px` }} />}
+                                mapElement={<div style={{ height: `100%` }} />}
+                                lng={action.geo_loc.lng}
+                                lat={action.geo_loc.lat}/>
                             <CardContent>
+                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                 <Typography gutterBottom variant="headline" component="h2">
                                     {action.name}
                                 </Typography>
+                                <Chip
+                                    color={"default"}
+                                    avatar={<Avatar><DateRangeIcon/></Avatar>}
+                                    label={action.end_date}
+                                    style={{width: 'auto'}}
+                                />
+                                </div>
                                 <Typography component="p">
-                                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                    across all continents except Antarctica
+                                    Kitty loves pigs meowing chowing and wowing, but experiences short bursts of poo-phoria after going to the loo hiding behind the couch until lured out by a feathery toy, wake up wander around the house making large amounts of noise jump on top of your human's bed and fall asleep again stare at ceiling.
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardActions>
                             <Button size="small" color="primary">
-                                Share
+                                Edit
                             </Button>
                             <Button size="small" color="primary">
-                                Learn More
+                                Remove
                             </Button>
                         </CardActions>
                     </Card>

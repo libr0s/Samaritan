@@ -69,7 +69,7 @@ class ActionView(Resource):
 
 
 class ActionListView(Resource):
-    
+
     @jwt_required
     def get(self):
         actions = []

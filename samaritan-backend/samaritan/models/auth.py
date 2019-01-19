@@ -12,6 +12,7 @@ from flask_jwt_extended import (
 from .users import User, Volunteer, Organisation, RevokedToken
 from .forms import UserForm, VolunteerForm, OrganisationForm
 from .db import jwt
+import sys
 
 parser = reqparse.RequestParser()
 parser.add_argument('type', required=True, help='Blank Type!')
@@ -66,6 +67,7 @@ class UserRegistration(Resource):
         if data['type'] == 'volunteer':
             form = VolunteerForm(data=request.get_json())
             new_user = User(email = form.email.data, type = data['type'])
+            print("user: ",new_user.id, file=sys.stderr)
             type_user = Volunteer(name = form.name.data, surname = form.surname.data, user = new_user.id)
 
         elif data['type'] == 'organisation':
@@ -74,9 +76,11 @@ class UserRegistration(Resource):
             type_user = Organisation(name = form.name.data, city = form.city.data,post_code=form.post_code.data, user = new_user.id)
 
         if form.validate():
-            type_user.save_to_db()
             new_user.hash_password(form.password.data)
             new_user.save_to_db()
+            type_user.user = new_user.id
+            type_user.save_to_db()
+
 
         else:
             return {'message': form.errors},400

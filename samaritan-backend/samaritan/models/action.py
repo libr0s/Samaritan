@@ -11,6 +11,10 @@ class ParticipationModel(db.Model):
         db.Integer, db.ForeignKey('actions.id'),
         nullable=False
     )
+    volunteer_id = db.Column(
+        db.Integer, db.ForeignKey('volunteers.id'),
+        nullable=False
+    )
     grade = db.Column(db.Boolean, default=False)
 
     def save_to_db(self):

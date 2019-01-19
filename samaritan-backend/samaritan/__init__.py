@@ -12,6 +12,7 @@ from samaritan.views import (
     volunteers,
     organisations,
     profile,
+    participations,
 )
 
 api = Api(app)
@@ -26,6 +27,8 @@ api.add_resource(volunteers.VolunteerListView, '/volunteers')
 api.add_resource(volunteers.VolunteerView, '/volunteer/<int:volunteer_id>')
 api.add_resource(organisations.OrganisationListView, '/organisations')
 api.add_resource(organisations.OrganisationView, '/organisation/<int:organisation_id>')
+api.add_resource(participations.VolunteerParticipationView,'/participation' , '/participation/<int:action_id>', endpoint = 'participation')
+api.add_resource(participations.ParticipationListView, '/participations/<int:action_id>')
 
 @app.shell_context_processor
 def make_shell_context():

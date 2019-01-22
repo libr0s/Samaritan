@@ -67,7 +67,10 @@ class UserRegistration(Resource):
         if data['type'] == 'volunteer':
             form = VolunteerForm(data=request.get_json())
             new_user = User(email = form.email.data, type = data['type'])
-            type_user = Volunteer(name = form.name.data, surname = form.surname.data, user = new_user.id)
+            type_user = Volunteer(
+                name=form.name.data, surname=form.surname.data,
+                user=new_user.id, location=form.location.data
+            )
 
         elif data['type'] == 'organisation':
             form = OrganisationForm(data=request.get_json())

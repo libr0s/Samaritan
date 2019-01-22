@@ -10,6 +10,20 @@ class UserType(enum.Enum):
     organisation='organisation'
     volunteer='volunteer'
 
+
+class LocationEnum(enum.Enum):
+
+    def __str__(self):
+        return str(self.value)
+
+    WARSZAWA='WARSZAWA'
+    WROCLAW='WROCLAW'
+    GDANSK='GDANSK'
+    KRAKOW='KRAKOW'
+    LUBLIN='LUBLIN'
+    BYDGOSZCZ='BYDGOSZCZ'
+
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -55,6 +69,7 @@ class Volunteer(db.Model):
     user = db.Column(db.ForeignKey(User.id))
     points = db.Column(db.Integer, default=0)
     rank = db.Column(db.String(120))
+    location = db.Column(db.Enum(LocationEnum))
 
     def save_to_db(self):
         db.session.add(self)

@@ -43,7 +43,8 @@ def bootstrap_db():
         surname='Testowy',
         user=u1.id,
         points=0,
-        rank='Jamnik'
+        rank='Jamnik',
+        location='WROCLAW'
     )
 
     o1 = Organisation(

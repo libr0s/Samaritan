@@ -25,10 +25,10 @@ def calc_distance_in_km(dest, city_cord):
     lat1, lng1 = city_cord['lat'], city_cord['lng']
     lat2, lng2 = dest['geo_loc']['lat'], dest['geo_loc']['lng']
 
-    lat1 = radians(52.2296756)
-    lng1 = radians(21.0122287)
-    lat2 = radians(52.406374)
-    lng2 = radians(16.9251681)
+    lat1 = radians(lat1)
+    lng1 = radians(lng1)
+    lat2 = radians(lat2)
+    lng2 = radians(lng2)
 
     dlng = lng2 - lng1
     dlat = lat2 - lat1
@@ -63,3 +63,5 @@ def rebuild_cache():
         if rebuilded:
             mongo.db.drop_collection(city)
             mongo.db[city].insert_many(rebuilded)
+
+    return res

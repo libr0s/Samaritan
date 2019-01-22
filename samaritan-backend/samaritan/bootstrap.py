@@ -1,5 +1,7 @@
 import datetime
 
+from samaritan.celery.tasks import rebuild_cache
+
 from samaritan.models.db import db
 from samaritan.models.users import Organisation, Volunteer, User
 from samaritan.models.action import ActionModel, ParticipationModel
@@ -32,11 +34,17 @@ def bootstrap_db():
         type='organisation'
     )
     u4.hash_password('test1234')
+    u5 = User(
+        email='u5@wp.pl',
+        type='volunteer'
+    )
+    u5.hash_password('test1234')
 
     u1.save_to_db()
     u2.save_to_db()
     u3.save_to_db()
     u4.save_to_db()
+    u5.save_to_db()
 
     v1 = Volunteer(
         name='Janek',
@@ -45,6 +53,14 @@ def bootstrap_db():
         points=0,
         rank='Jamnik',
         location='WROCLAW'
+    )
+    v2 = Volunteer(
+        name='Janek',
+        surname='Testowy',
+        user=u5.id,
+        points=0,
+        rank='Jamnik',
+        location='GDANSK'
     )
 
     o1 = Organisation(
@@ -75,16 +91,24 @@ def bootstrap_db():
     print('Models created')
 
     v1.save_to_db()
+    v2.save_to_db()
     o1.save_to_db()
     o2.save_to_db()
     o3.save_to_db()
 
     g = GeoMarkerModel(
-        name = 'Testowa lokacja',
+        name = 'Legnickie Rejony',
         address = 'Jamnikowa 15',
-        lat = 1.69,
-        lng = -1.69,
-        type = 'Lokalizacja',
+        lat = 51.204778,
+        lng = 16.090291,
+        type = 'miasto',
+    )
+    g1 = GeoMarkerModel(
+        name = 'WWA',
+        address = 'Jamnikowa 15',
+        lat = 52.2330653,
+        lng = 20.9211119,
+        type = 'miasto',
     )
 
     print('Creating actions')
@@ -98,7 +122,7 @@ def bootstrap_db():
         name='Akcja 2',
         points=24,
         end_date=datetime.date(2019, 12, 31),
-        geo_loc = g,
+        geo_loc = g1,
     )
     a3 = ActionModel(
         name='Sylwester',
@@ -114,3 +138,8 @@ def bootstrap_db():
     o2.save_to_db()
 
     print('DB Bootstraped')
+
+    print('Rebuilding cache')
+    result = rebuild_cache.delay()
+    result.wait()
+    print('Cache rebuilded')

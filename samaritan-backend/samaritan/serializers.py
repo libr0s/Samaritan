@@ -66,7 +66,8 @@ class VolunteersSerializer(object):
             'name': fields.String,
             'surname': fields.String,
             'points': fields.Integer,
-            'rank': fields.String
+            'rank': fields.String,
+            'location': fields.String,
         }
 
     def serialize(self):

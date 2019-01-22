@@ -1,3 +1,6 @@
+import json
+
+from bson.json_util import dumps
 from datetime import datetime
 
 from flask_restful import (
@@ -13,7 +16,7 @@ from samaritan.models.auth import (
     volunteer_required,
     organisation_required,
 )
-from samaritan.celery.tasks import test
+from samaritan.celery.tasks import rebuild_cache
 from samaritan.models.mongo_db import mongo
 from samaritan.models.geo_marker import GeoMarkerModel
 from samaritan.models.users import Organisation
@@ -45,6 +48,7 @@ class ActionView(Resource):
         if a:
             if a in user.actions:
                 a.delete()
+                rebuild_cache.delay()
                 return {'message': 'Akcje o id: {} usunieta.'.format(action_id)}, 200
             else:
                 return {'message': 'To nie jest akcja twojej organizacji'}, 403
@@ -63,6 +67,7 @@ class ActionView(Resource):
                 for atr, val in args.items():
                     setattr(a, atr, val)
                 a.save_to_db()
+                rebuild_cache.delay()
                 return {'message': 'Akcje o id: {} zmodyfikowana.'.format(action_id)}, 200
             else:
                 return {'message': 'To nie jest akcja twojej organizacji'}, 403
@@ -81,13 +86,13 @@ class ActionListView(Resource):
 
         if isinstance(user, Organisation):
             qs = ActionModel.query.filter(ActionModel.organisation_id==user.id)
+            for action in qs:
+                actions.append(
+                    ActionSerializer(action).serialize()
+                )
         else:
-            qs = mongo.db[str(user.location)].find()
-
-        for action in qs:
-            actions.append(
-                ActionSerializer(action).serialize()
-            )
+            qs = mongo.db[str(user.location)].find({}, {'_id': False})
+            actions = json.loads(dumps(qs))
 
         return actions
 
@@ -112,5 +117,7 @@ class ActionListView(Resource):
             o.save_to_db()
         except Exception:
             return {'message': 'Blad serwera'}, 500
+
+        rebuild_cache.delay()
 
         return {'message': 'Stowrzono akcje id: {}'.format(a.id)}, 201

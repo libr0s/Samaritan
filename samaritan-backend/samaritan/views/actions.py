@@ -13,6 +13,7 @@ from samaritan.models.auth import (
     volunteer_required,
     organisation_required,
 )
+from samaritan.models.mongo_db import mongo
 from samaritan.models.geo_marker import GeoMarkerModel
 from samaritan.models.users import Organisation
 from samaritan.serializers import ActionSerializer
@@ -80,9 +81,7 @@ class ActionListView(Resource):
         if isinstance(user, Organisation):
             qs = ActionModel.query.filter(ActionModel.organisation_id==user.id)
         else:
-            qs = ActionModel.query\
-            .filter(ActionModel.start_date <= datetime.now())\
-            .filter(ActionModel.end_date >= datetime.now())
+            qs = mongo.db[str(user.location)].find()
 
         for action in qs:
             actions.append(

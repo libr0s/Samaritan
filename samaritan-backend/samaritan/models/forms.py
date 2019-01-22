@@ -9,13 +9,16 @@ def is_email_valid(address):
         return False
     return True
 
+
 def user_email(form, field):
     if not is_email_valid(field.data):
         raise validators.ValidationError("The e-mail address {} is already taken.".format(field.data))
 
+
 class UserForm(Form):
     email = fields.StringField('Email', [validators.Email(), user_email])
     password = fields.StringField('Password', [validators.DataRequired()])
+
 
 class VolunteerForm(UserForm):
     name = fields.StringField('Name', [validators.DataRequired(),
@@ -29,6 +32,7 @@ class VolunteerForm(UserForm):
     location = fields.SelectField('Location', [validators.DataRequired(),], choices=[
         (v, v) for v in MAIN_LOCATIONS.keys()
     ])
+
 
 class OrganisationForm(UserForm):
     name = fields.StringField('Name', [validators.DataRequired(),

@@ -6,6 +6,7 @@ services:
            - "8000:5000"
        depends_on:
            - "db"
+           - "mongo"
        volumes:
            - "./samaritan-backend:/app"
     db:
@@ -18,6 +19,10 @@ services:
            POSTGRES_PASSWORD: test
        ports:
            - 5432:5432
+    mongo:
+       image: "mongo:3.4.18-jessie"
+       volumes:
+           - "samaritan_mongo-volume"
     swagger-ui:
        image: swaggerapi/swagger-ui
        container_name: "swagger-ui"

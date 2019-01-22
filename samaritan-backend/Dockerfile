@@ -6,7 +6,8 @@ COPY ./ /app/
 WORKDIR /app
 RUN pip install -r ./requirments.txt
 
-ENV FLASK_APP=/app/samaritan
-ENV FLASK_ENV=development
+ENV FLASK_APP=/app/samaritan\
+    FLASK_ENV=development\
+    MONGO_URI=mongodb://mongo:27017/cache_actions
 
 CMD ["flask", "run", "--host=0.0.0.0"]

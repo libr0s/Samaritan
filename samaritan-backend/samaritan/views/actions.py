@@ -13,6 +13,7 @@ from samaritan.models.auth import (
     volunteer_required,
     organisation_required,
 )
+from samaritan.celery.tasks import test
 from samaritan.models.mongo_db import mongo
 from samaritan.models.geo_marker import GeoMarkerModel
 from samaritan.models.users import Organisation

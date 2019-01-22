@@ -12,7 +12,6 @@ from flask_jwt_extended import (
 from .users import User, Volunteer, Organisation, RevokedToken
 from .forms import UserForm, VolunteerForm, OrganisationForm
 from .db import jwt
-import sys
 
 parser = reqparse.RequestParser()
 parser.add_argument('type', required=True, help='Blank Type!')
@@ -63,11 +62,11 @@ def add_claims_to_access_token(identity):
 class UserRegistration(Resource):
    def post(self):
         data = parser.parse_args()
+        form = None
 
         if data['type'] == 'volunteer':
             form = VolunteerForm(data=request.get_json())
             new_user = User(email = form.email.data, type = data['type'])
-            print("user: ",new_user.id, file=sys.stderr)
             type_user = Volunteer(name = form.name.data, surname = form.surname.data, user = new_user.id)
 
         elif data['type'] == 'organisation':

@@ -14,8 +14,7 @@ from samaritan.models.users import Volunteer
 from samaritan.models.action import ParticipationModel, ActionModel
 from samaritan.serializers import VolunteersSerializer, ActionSerializer
 from samaritan.utils import get_user_from_claim
-
-# todo: zablokowanie możliwości dołączenia do zakończonej akcji
+from datetime import datetime
 
 class VolunteerParticipationView(Resource):
 
@@ -23,22 +22,18 @@ class VolunteerParticipationView(Resource):
     def post(self, action_id):
         claims = get_jwt_claims()
         user = get_user_from_claim(claims)
+
         a = ActionModel.query.filter_by(id = action_id).first()
         ex = ParticipationModel.query.filter_by(action_id = action_id, volunteer_id = user.id).first()
 
-        if ex:
-            return {'message': "Jestes juz zapisany do tej akcji"}, 500
+        p = ParticipationModel(action_id= action_id, volunteer_id = user.id)
 
-        p = ParticipationModel(action_id= action_id, volunteer_id = user.id,)
+        if ex or (a and a.end_date < datetime.now()) :
+            return {'message': "Uzytkownik nie moze byc zapisany do tej akcji"}, 400
 
         if a:
-            try:
-                p.save_to_db()
-
-            except Exception:
-                return {'message': 'Blad serwera'}, 500
-
-            return {'message': 'Dolaczono do akcji o id: {}'.format(action_id)}, 201
+            p.save_to_db()
+            return {'message': 'Dolaczono do akcji o id: {}'.format(action_id)}, 200
         else:
             return {'message': 'Dana akcja nie istnieje'}, 404
 
@@ -48,11 +43,11 @@ class VolunteerParticipationView(Resource):
         u = get_user_from_claim(c)
         p = ParticipationModel.query.filter_by(action_id = action_id, volunteer_id = u.id).first()
 
-        if p:
+        if p and not p.grade:
             p.delete()
-            return {'message': 'Anulowano udział w akcji o id: {}'.format(action_id)},201
+            return {'message': 'Anulowano udział w akcji o id: {}'.format(action_id)},200
         else:
-            return self.non_exists()
+            return {'message': 'Brak mozliwosci anulowania udzialu'}, 400
 
     @volunteer_required
     def get(self, action_id = None):
@@ -66,7 +61,7 @@ class VolunteerParticipationView(Resource):
             actions.append(ActionSerializer(a).serialize())
 
         if a:
-            return actions, 201
+            return actions, 200
         else:
             return {'message': 'Użytkownik nie jest zapisany do żadnej akcji'}, 404
 
@@ -83,6 +78,6 @@ class ParticipationListView(Resource):
             volunteers.append(VolunteersSerializer(v).serialize())
 
         if v:
-            return volunteers, 201
+            return volunteers, 200
         else:
             return {'message': 'Brak użytkowników zapisanych do tej akcji'}, 404

@@ -53,7 +53,7 @@ class Volunteer(db.Model):
     name = db.Column(db.String(120), nullable = False)
     surname = db.Column(db.String(120), nullable = False)
     user = db.Column(db.ForeignKey(User.id))
-    points = db.Column(db.Integer)
+    points = db.Column(db.Integer, default=0)
     rank = db.Column(db.String(120))
 
     def save_to_db(self):

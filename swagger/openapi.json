@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  description: Dokumentacja api naszego projektu zawierająca specyfikacje danych endpointów
+  description: Dokumentacja api naszego projektu zawierająca specyfikacje danych endpointów. Do wszystkich endpointów poza rejestracją i logowaniem, powinien być dołączony token autoryzacyjny w nagłówku zapytania postaci 'Bearer <wartość tokena>'. Zapytanie bez ważnego tokena skutkuje response z kodem 400.
   version: 1.0.0
   title: Samaritan - dokumentacja api
 host: '127.0.0.1:8000'
@@ -272,6 +272,86 @@ paths:
                 type: string
                 enum:
                   - Blad serwera
+  '/partitcipation/{id_akcji}':
+    post:
+      summary: Dołączenie zalogowanego użytkownika do akcji o danym id
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Użytkownik dołączył do danej akcji
+        '404':
+          description: Dana akcja nie istnieje
+        '400':
+          description: Użytkownik nie może być zapisany do danej akcji, ponieważ już jest do niej zapisany lub akcja się zakończyła
+    delete:
+      summary: Anulowanie udziału zalogowanego użytkownika w akcji o danym id
+      responses:
+        '200':
+          description: poprawne anulowanie udziału
+        '400':
+          description: użytkownik nie jest zapiany do tej akcji lub akcja się zakończyła
+  '/participation':
+    get:
+      summary: Zwrócenie wszystkich akcji do których jest zapisany zalogowany wolontariusz
+      responses:
+        '200':
+          description: poprawne zwrócenie wszystkich akcji w tablicy
+        '404':
+          description: użytkownik nie jest zapisany do żadnych akcji 
+  '/participations':
+    get:
+      summary: Zwrócenie wszystkich wolontraiuszy zapisanych do danej akcji
+      responses:
+        '200':
+          description: poprawne zwrócenie wszystkich wolontariusz w tablicy
+        '404':
+          description: do danej akcji nikt nie jest zapisany 
+  '/grading':
+    post:
+      summary: Przyznanie punktów danemu wolontariuszowi za zakończoną akcje
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: JSON z danymi wolontariusz, akcji oraz liczbą przyznanych punktów
+          schema:
+            properties:
+              volunteer_id:
+                type: string
+              action_id:
+                type: string
+              points:
+                type: string
+      responses:
+        '200': 
+          description: punkty zostały poprawnie przyznane
+        '403':
+          description: próba przyznania punktów za akcję innej organizacji
+        '400':
+          description: dana akcja się nie zakończyła
+        '404':
+          description: wolontariusz nie uczestniczy w danej akcji lub został już oceniony
+    get:
+      summary: Zwrócenie wszystkich ocenionych lub nieocenionych wolontariuszy w danej akcji
+      parameters:
+        - in: path
+          name: action_id
+          type: integer
+          required: true
+          description: Numer id akcji, której wolontariuszy chcemy wyszukać
+        - in: path
+          name: grade
+          type: boolean
+          required: true
+          description: True- zwróceni zostaną ocenieni wolontariusze w danej akcji, False- zwróceni zostaną nieocenieni wolontariusze w danej akcji
+      responses: 
+        '200': 
+          description: Zwrócenie listy wolontariuszy
+        '404':
+          description: brak wolontariuszy spełniających kryteria  
+      
 definitions:
   GrandParent:
     type: object
@@ -326,3 +406,4 @@ definitions:
           type: string
           enum:
             - Not a valid post code
+

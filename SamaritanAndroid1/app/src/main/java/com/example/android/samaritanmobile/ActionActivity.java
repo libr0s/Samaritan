@@ -43,7 +43,6 @@ public class ActionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActionActivity.this);
                 alertDialog.setTitle(DataStorage.doYouWantToJoinAction + "  " + action.getName() +"?");
-                alertDialog.setMessage("this is my app");
                 alertDialog.setPositiveButton(DataStorage.Yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

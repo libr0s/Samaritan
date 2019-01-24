@@ -14,7 +14,7 @@
     <string name="myActions">Moje akcje</string>
     <string name="organizations">Organizacje</string>
     <string name="findAction">Znajdź akcję</string>
-    <string name="profileSettings">Ustawienia profilu</string>
+    <string name="logOut">Wyloguj się</string>
     <string name="joinActionButtonText">Zgłoś się!</string>
     <string name="YourActions">Odbyte przez Ciebię akcje:</string>
     <string name="AvailableActions">Dostępne akcje:</string>
@@ -22,5 +22,6 @@
     <string name="Send">Wyślij</string>
     <string name="YourMessages">Wiadomości:</string>
     <string name="Respond">Odpowiedz</string>
+    <string name="Delete">Usuń</string>
 
 </resources>

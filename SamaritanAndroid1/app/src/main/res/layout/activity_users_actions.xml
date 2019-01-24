@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/top_page_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/YourActions"
+        android:textColor="@color/topTextColor"
+        android:textStyle="bold"
+        android:textSize="27sp"
+        android:layout_marginTop="10dp"
+        android:padding="25sp"/>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -18,25 +30,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:padding="10dip">
-
-                <TableRow
-                    android:id="@+id/table_row_action"
-                    android:onClick="rowClick"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="25sp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/YourActions"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="27sp" />
-                </TableRow>
-
-
 
 
             </TableLayout>

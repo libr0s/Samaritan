@@ -23,6 +23,11 @@ public class UserMainPageActivity extends AppCompatActivity {
         setUserData();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void rowClick(View view) {
         switch(view.getId()) {
             case R.id.table_row_messages:
@@ -36,6 +41,9 @@ public class UserMainPageActivity extends AppCompatActivity {
                 break;
             case R.id.table_row_find_actions:
                 startActivity(new Intent(UserMainPageActivity.this, FindActionsActivity.class));
+                break;
+            case R.id.table_log_out:
+                startActivity(new Intent(UserMainPageActivity.this, MainActivity.class));
                 break;
         }
 

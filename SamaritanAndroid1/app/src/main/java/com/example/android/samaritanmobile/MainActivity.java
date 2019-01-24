@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                // TODO send email pass to backend
+                // TODO send and email pass to backend
                 startActivity(new Intent(MainActivity.this, UserMainPageActivity.class));
             }
         });
@@ -42,5 +42,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SignupActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

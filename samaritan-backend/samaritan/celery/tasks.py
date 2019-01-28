@@ -63,5 +63,3 @@ def rebuild_cache():
         if rebuilded:
             mongo.db.drop_collection(city)
             mongo.db[city].insert_many(rebuilded)
-
-    return res

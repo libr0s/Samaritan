@@ -23,5 +23,7 @@
     <string name="YourMessages">Wiadomości:</string>
     <string name="Respond">Odpowiedz</string>
     <string name="Delete">Usuń</string>
+    <string name="PickPhoto">Wybierz zdjęcie</string>
+    <string name="photoNotChosen">Nie wybrano zdjecia.</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emailET, loginET, passwordET, nameET, surnameET;
     private TextView avatarStatusTV;
     private Uri avatarPhoto;
+    private Spinner citiesSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,14 @@ public class SignupActivity extends AppCompatActivity {
             }
 
         });
+
+        citiesSpinner = (Spinner)findViewById(R.id.spinnerCities);
+        String[] citiesList = new String[]{"Wroclaw", "Warszawa", "Poznan", "Krakow", };
+//create an adapter to describe how the items are displayed, adapters are used in several places in android.
+//There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter);
 
 
 

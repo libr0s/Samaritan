@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Paulina on 11.12.2018.
  */
@@ -18,6 +21,9 @@ public class ActionActivity extends AppCompatActivity {
     private TextView actionNameTV, actionDateTV, actionDescriptionTV;
     private Button joinActionButton;
     private AlertDialog alert;
+    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
+    static final LatLng KIEL = new LatLng(53.551, 9.993);
+    private GoogleMap map;
 
 
     @Override

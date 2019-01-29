@@ -6,5 +6,5 @@
     <color name="background">#ffffff</color>
     <color name="topTextColor">#ffffff</color>
     <color name="green">#54d47a</color>
-
+    <color name="darkGray">#7d807d</color>
 </resources>

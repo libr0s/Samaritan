@@ -24,7 +24,7 @@ public class FindActionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_actions);
 
-        actionsTable = findViewById(R.id.tableActions);
+        actionsTable = (TableLayout) findViewById(R.id.tableActions);
         final ArrayList<Action> actions = loadUsersActions();
         for(i = 0; i < actions.size(); i++){
             final TableRow tableRow = new TableRow(this);

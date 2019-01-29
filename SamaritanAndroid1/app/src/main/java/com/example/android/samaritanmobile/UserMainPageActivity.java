@@ -51,13 +51,13 @@ public class UserMainPageActivity extends AppCompatActivity {
     }
 
     public void setUserData(){
-        avatar = findViewById(R.id.ivProfile);
-        nameTV = findViewById(R.id.tvName);
-        surnameTV = findViewById(R.id.tvSurname);
-        pointsTV = findViewById(R.id.tvPoints);
-        actionsTV = findViewById(R.id.tvActions);
-        descriptionTV = findViewById(R.id.tvDescription);
-        avatar = findViewById(R.id.ivProfile);
+        avatar = (ImageView) findViewById(R.id.ivProfile);
+        nameTV = (TextView) findViewById(R.id.tvName);
+        surnameTV = (TextView) findViewById(R.id.tvSurname);
+        pointsTV = (TextView) findViewById(R.id.tvPoints);
+        actionsTV = (TextView) findViewById(R.id.tvActions);
+        descriptionTV = (TextView) findViewById(R.id.tvDescription);
+        avatar = (ImageView) findViewById(R.id.ivProfile);
 
         //TODO load data from backend
     }

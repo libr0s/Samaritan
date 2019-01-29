@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvActionDate"
         android:layout_margin="10dp"
+        android:textSize="20dp"
         android:text="12-12-2018"/>
 
     <TextView
@@ -29,17 +31,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvActionDescription"
         android:layout_margin="10dp"
+        android:textSize="20dp"
         android:layout_marginBottom="20dp"
         android:text="description "/>
 
-
+    <fragment
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/mapFragmentAction"
+        android:name="com.example.android.samaritanmobile.MapFragment"
+        tools:layout="@layout/fragment_actions_map" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bttnJoinAction"
         android:text="@string/joinActionButtonText"
-        android:padding="10dp"/>
+        android:textSize="20dp"
+        android:padding="15dp"/>
 
 
 </LinearLayout>

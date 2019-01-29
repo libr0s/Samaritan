@@ -57,6 +57,7 @@ public class UserMainPageActivity extends AppCompatActivity {
         pointsTV = findViewById(R.id.tvPoints);
         actionsTV = findViewById(R.id.tvActions);
         descriptionTV = findViewById(R.id.tvDescription);
+        avatar = findViewById(R.id.ivProfile);
 
         //TODO load data from backend
     }

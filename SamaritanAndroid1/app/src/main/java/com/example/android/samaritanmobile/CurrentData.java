@@ -14,4 +14,5 @@ public class CurrentData {
     public void setCurrentlyViewedAction(Action currentlyViewedAction) {
         this.currentlyViewedAction = currentlyViewedAction;
     }
+
 }

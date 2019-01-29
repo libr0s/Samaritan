@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView emailTV;
@@ -24,12 +26,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String email="";
+                String pass="";
+
                 try{
-                    String email = emailTV.getText().toString();
-                    String pass = passwordTV.getText().toString();
+                    email = emailTV.getText().toString();
+                    pass = passwordTV.getText().toString();
 
                 }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
 
+                Connection connection = Connection.getInstance();
+
+                /*połączenie i wysłanie requestu
+                * Narazie testowo wysylam GET registration
+                * */
+                try {
+                    connection.registrationGETReq();
+                    //connection.loginPOSTReq(email, pass);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
                 // TODO send and email pass to backend

@@ -20,13 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/comeBackButtonText"
-            android:background="@null"
-            android:layout_marginTop="3dp"
+            android:background="@drawable/spinnerbackground"
+            android:layout_marginTop="10dp"
             android:textSize="13dp"
             android:textColor="@android:color/black"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:layout_marginBottom="15dp"/>
 
     </LinearLayout>
@@ -78,7 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="3dp"
         android:layout_weight=".28"
-        android:layout_margin="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="1dp"
         android:background="@drawable/spinnerbackground"
         android:orientation="horizontal">
 
@@ -95,7 +96,7 @@
 
         <ImageView
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
@@ -111,10 +112,11 @@
         <Button
             android:id="@+id/choose_avatar_bttn"
             android:text="@string/PickPhoto"
-            android:background="@color/colorAccent"
+            android:background="@color/tonnedBlue"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#fff"
             android:padding="10dp"/>
 
         <TextView
@@ -129,6 +131,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/signUuButtonText"
+        android:background="@color/backgroundStartColor"
         android:layout_marginTop="20dp"
         android:textColor="@android:color/white"/>
 </LinearLayout>

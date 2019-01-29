@@ -7,4 +7,7 @@
     <color name="topTextColor">#ffffff</color>
     <color name="green">#54d47a</color>
     <color name="darkGray">#7d807d</color>
+    <color name="tonnedBlue">#949cca</color>
+    <color name="backgroundStartColor">#5344FB</color>
+    <color name="backgroundEndColor">#85e5f7</color>
 </resources>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from "@material-ui/core/Typography/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
@@ -15,10 +14,6 @@ import Chip from "@material-ui/core/Chip/Chip";
 import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
 import Spinner from "./Spinner";
-import InfoIcon from '@material-ui/icons/MoreHoriz';
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import {Link} from "react-router-dom";
-import MapComponent from "./MapComponent";
 import {getHeaders} from "../utils"
 
 

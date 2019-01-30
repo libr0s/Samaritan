@@ -11,7 +11,8 @@ import {getHeaders} from "../utils";
 export default class FormDialog extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+        const {name, description, points, startDate, endDate, failedFetch, city, address, postalCode, geocode} = props.action;
 
         this.state = {
             name: '',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography } from '@material-ui/core';
+import {Paper, Typography} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from "@material-ui/core/Button/Button";
 import MapComponent from "./MapComponent";
@@ -48,7 +48,7 @@ class DetailsRoute extends React.Component {
 
     handleConfirm = () => {
 
-    }
+    };
 
     handleClose = () => {
     };

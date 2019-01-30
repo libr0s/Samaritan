@@ -7,11 +7,13 @@ import MenuBar from './components/MenuBar';
 
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import ActionsRoute from "./components/ActionsRoute";
+import DetailsRoute from "./components/DetailsRoute";
 
 class App extends React.Component {
 
     state = {
-        loggedIn: localStorage.getItem('access_token') !== null,
+        loggedIn: localStorage.getItem('access_token') !== undefined,
+        action: undefined,
     };
 
     onLoginAction = (e, email, password) => {
@@ -67,6 +69,13 @@ class App extends React.Component {
         localStorage.removeItem('access_token');
     };
 
+    onActionSelected = (action) => {
+        this.setState({
+            action: action, 
+        });
+        console.log(this.state.action);
+    };
+
     render() {
         const {loggedIn} = this.state;
         console.log(loggedIn)
@@ -95,7 +104,10 @@ class App extends React.Component {
                     <Route
                         exact
                         path="/actions"
-                        component={ActionsRoute}
+                        render={ () => <ActionsRoute onActionSelected={this.onActionSelected} /> }
+                    />
+                    <Route  path="/details"
+                        render={() => (this.state.action ? <DetailsRoute action={this.state.action}/> : <Redirect to="/actions"/>)}
                     />
                 </div>
             </Router>

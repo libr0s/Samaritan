@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from "@material-ui/core/Typography/Typography";
@@ -13,6 +14,8 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import Chip from "@material-ui/core/Chip/Chip";
 import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
+import MapComponent from "./MapComponent";
+
 
 const styles = theme => ({
     root: {
@@ -36,11 +39,15 @@ const styles = theme => ({
     }
 });
 
+
+
 const token = 'Bearer ' + localStorage.getItem('access_token');
 const reqHeaders = new Headers({
     'Content-Type': 'application/json',
     'Authorization': token
 });
+
+const DetailsLink = (props) => <Link to="/details" {...props} />;
 
 class ActionsRoute extends React.Component {
 
@@ -57,9 +64,14 @@ class ActionsRoute extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+        this.fetchAccounts();
     };
 
-    componentDidMount() {
+    onActionSelected = account => (e) => {
+        this.props.onActionSelected(account);
+    }
+
+    fetchAccounts = () => {
         fetch('/actions', {
             method: 'GET',
             headers: reqHeaders,
@@ -79,6 +91,11 @@ class ActionsRoute extends React.Component {
             });
     }
 
+    
+    componentDidMount() {
+       this.fetchAccounts();
+    }
+
     handleChange = panel => (event, expanded) => {
         this.setState({
             expanded: expanded ? panel : false,
@@ -92,6 +109,7 @@ class ActionsRoute extends React.Component {
         return (
             <div>
                 <div className={classes.root}>
+
                     {actions.map((action, id) => (
                         <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
                                         onChange={this.handleChange(`panel${id}`)}>
@@ -120,9 +138,38 @@ class ActionsRoute extends React.Component {
                                         <Chip
                                             color={"default"}
                                             avatar={<Avatar><DateRangeIcon/></Avatar>}
-                                            label={action.end_date}
+                                            label={action.end_date.substr(0,10)}
                                             style={{width: 'auto'}}
                                         />
+                                    </div>
+                                    <div style={{displayy: 'flex', flexDirection: 'column',marginLeft:"auto", marginRight:"auto"}}>
+                                    <Button
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionSelected(action)} 
+                                        style={{maxWidth:200}}
+                                        component={DetailsLink}
+                                    >
+                                        EDIT
+                                    </Button>
+                                        <Button
+                                        variant="extendedFab" color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionSelected(action)} 
+                                        style={{maxWidth:200}}
+                                        component={DetailsLink}
+                                    >
+                                        DETAILS
+                                    </Button>
+                                    <Button
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionSelected(action)} 
+                                        style={{maxWidth:200}}
+                                        component={DetailsLink}
+                                    >
+                                        REMOVE
+                                    </Button>
                                     </div>
                                 </div>
                             </ExpansionPanelDetails>
@@ -136,7 +183,7 @@ class ActionsRoute extends React.Component {
                         }}>
                         <Button
                             onClick={this.handleClickOpen}
-                            style={{position: 'fixed', bottom: '2em', margin: '1em', width: '12em'}}
+                            style={{position: 'fixed', bottom: '2em', right: '2em', margin: '1em', width: '12em'}}
                             variant="extendedFab" color="primary"
                             aria-label="Add"
                             className={classes.button}>

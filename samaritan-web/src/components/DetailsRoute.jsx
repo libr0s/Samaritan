@@ -20,7 +20,7 @@ const styles = theme => ({
 
     },
     paper: {
-        maxHeight: 580, 
+        maxHeight: 580,
         overflow: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -44,10 +44,10 @@ class DetailsRoute extends React.Component {
         }
         console.log("[DETAILS] contructor ", this.state.action);
     }
-    
+
 
     handleConfirm = () => {
-    
+
     }
 
     handleClose = () => {
@@ -65,9 +65,10 @@ class DetailsRoute extends React.Component {
             method: 'GET',
             headers: getHeaders(),
         })
-            .then(response => { 
+            .then(response => {
                 console.log("[DETAILS] Response: ", response);
-                return response.json();
+                if (response == '200')
+                    return response.json();
             })
             .then(json => {
                 console.log("[DETAILS] Json: ", json);
@@ -79,7 +80,7 @@ class DetailsRoute extends React.Component {
     render() {
         const {classes} = this.props;
         const {volunteers, action} = this.state;
-        
+
         console.log("[DETAILS] Render");
 
         return (
@@ -88,9 +89,9 @@ class DetailsRoute extends React.Component {
                     isMarkerShown="true"
                     lat={action.geo_loc.lat}
                     lng={action.geo_loc.lng}
-                />       
+                />
                 <div className={classes.info}>
-                
+
                     <Paper className={classes.paper}>
                         <Typography variant="h2">
                             {action.name}
@@ -98,11 +99,11 @@ class DetailsRoute extends React.Component {
                         <Typography variant="h4">
                             {action.organisation.name}
                         </Typography>
-                        
+
                         <Typography variant="caption">
                             {action.startDate && 'Start Date: ' + action.startDate.substr(0, 10)}
                         </Typography>
-                        
+
                         <Typography variant="caption">
                             {'End Date: ' + action.end_date.substr(0, 10)}
                         </Typography>
@@ -118,7 +119,7 @@ class DetailsRoute extends React.Component {
                     </Paper>
                     <Paper className={classes.paper}>
                         <div>
-                            {volunteers ? volunteers.map((volunteer, id) => 
+                            {volunteers ? volunteers.map((volunteer, id) =>
                             <div className={classes.card}>
                                 <div>
                                     <Typography variant="title">{volunteer.name} {volunteer.surname}</Typography>
@@ -131,12 +132,12 @@ class DetailsRoute extends React.Component {
                             </div>
                             ) : <Typography variant="display1">Brak uczestników</Typography>}</div>
                     </Paper>
-                    
-                </div>    
+
+                </div>
             </div>
         );
     }
-} 
+}
 
 
 

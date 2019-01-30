@@ -77,7 +77,7 @@ class App extends React.Component {
 
     onActionSelected = (action) => {
         this.setState({
-            action: action, 
+            action: action,
         });
         console.log(this.state.action);
     };
@@ -85,12 +85,12 @@ class App extends React.Component {
     handleSnackbarPop = (text) => {
         this.props.enqueueSnackbar(text);
       };
-    
+
     handleSnackbarPopVariant = variant => (text) => {
      // variant could be success, error, warning or info
         this.props.enqueueSnackbar(text, { variant });
     };
-    
+
 
     render() {
         const {loggedIn} = this.state;
@@ -133,6 +133,6 @@ class App extends React.Component {
 
 App.propTypes = {
     enqueueSnackbar: PropTypes.func.isRequired,
-  };  
+  };
 
 export default App;

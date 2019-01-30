@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from "@material-ui/core/Typography/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
@@ -14,7 +13,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import Chip from "@material-ui/core/Chip/Chip";
 import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
-import MapComponent from "./MapComponent";
+import Spinner from "./Spinner";
 import {getHeaders} from "../utils"
 
 
@@ -50,13 +49,15 @@ class ActionsRoute extends React.Component {
         sentences: [],
         expanded: false,
         open: false,
+        fetching: true,
     };
 
     handleClickOpen = () => {
-        this.setState({ open: true });
+        this.setState({open: true});
     };
 
     handleClose = () => {
+        this.setState({open: false});
         this.setState({ open: false });
         this.fetchAccounts();
     };
@@ -78,7 +79,7 @@ class ActionsRoute extends React.Component {
     }
 
     fetchAccounts = () => {
-        
+
         fetch('/actions', {
             method: 'GET',
             headers: getHeaders(),
@@ -97,10 +98,11 @@ class ActionsRoute extends React.Component {
             .then(json => {
                 console.log(json);
                 this.setState({sentences: json});
+                this.setState({fetching: false});
             });
     }
 
-    
+
     componentDidMount() {
        this.fetchAccounts();
     }
@@ -116,7 +118,9 @@ class ActionsRoute extends React.Component {
         const {sentences, expanded, actions} = this.state;
 
         return (
-            <div>
+            this.state.fetching
+            ? <Spinner/>
+            : <div>
                 <div className={classes.root}>
                     {actions && actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
                     {actions && actions.map((action, id) => (
@@ -155,7 +159,7 @@ class ActionsRoute extends React.Component {
                                     <Button
                                         color="primary"
                                         className={classes.button}
-                                        onClick={this.onActionSelected(action)} 
+                                        onClick={this.onActionSelected(action)}
                                         style={{maxWidth:200}}
                                         component={DetailsLink}
                                     >
@@ -164,7 +168,7 @@ class ActionsRoute extends React.Component {
                                         <Button
                                         variant="extendedFab" color="primary"
                                         className={classes.button}
-                                        onClick={this.onActionSelected(action)} 
+                                        onClick={this.onActionSelected(action)}
                                         style={{maxWidth:200}}
                                         component={DetailsLink}
                                     >
@@ -173,7 +177,7 @@ class ActionsRoute extends React.Component {
                                     <Button
                                         color="primary"
                                         className={classes.button}
-                                        onClick={this.onActionRemoved(action)} 
+                                        onClick={this.onActionRemoved(action)}
                                         style={{maxWidth:200}}
                                     >
                                         REMOVE

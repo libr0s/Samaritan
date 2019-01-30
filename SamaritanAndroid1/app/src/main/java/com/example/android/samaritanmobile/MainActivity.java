@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView emailTV;
@@ -20,19 +22,44 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button)findViewById(R.id.btn_login);
         signupButton = (Button)findViewById(R.id.btn_link_signup);
 
+        emailTV = (TextView)findViewById(R.id.login_input_email);
+        passwordTV = (TextView)findViewById(R.id.login_input_password);
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                String email="";
+                String pass="";
+
                 try{
-                    String email = emailTV.getText().toString();
-                    String pass = passwordTV.getText().toString();
+                    email = emailTV.getText().toString();
+                    pass = passwordTV.getText().toString();
 
                 }catch (NullPointerException e){
-
+                    e.printStackTrace();
                 }
 
-                // TODO send email pass to backend
+                /*połączenie i wysłanie requestu*//*
+                PostLogin postLogin = new PostLogin();
+                try {
+                    postLogin.connect("u5@wp.pl", "?");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+                PostRegistration postRegistration = new PostRegistration();
+                try {
+                    postRegistration.connect("a", "a", "a", "a", "GDANSK");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                GetRegistration get = new GetRegistration();
+                get.execute();
+
+
+                // TODO send and email pass to backend
                 startActivity(new Intent(MainActivity.this, UserMainPageActivity.class));
             }
         });
@@ -42,5 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SignupActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

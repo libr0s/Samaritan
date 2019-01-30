@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+    android:id="@+id/tvMessageSender"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Do: Nazwa"
+    android:layout_margin="@dimen/standard_margin"
+        android:textSize="@dimen/small_text_size"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvMessageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:layout_margin="@dimen/standard_margin"
+            android:textSize="@dimen/small_text_size"/>
+
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/bttnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Delete"
+            android:layout_margin="@dimen/standard_margin"
+            android:textSize="@dimen/small_text_size_button"/>
+        <Button
+            android:id="@+id/bttnReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Respond"
+            android:layout_margin="@dimen/standard_margin"
+            android:textSize="@dimen/small_text_size_button"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

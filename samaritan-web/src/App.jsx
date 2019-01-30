@@ -4,15 +4,17 @@ import LoginRoute from './components/LoginRoute';
 import ProfileRoute from './components/ProfileRoute';
 import AboutRoute from './components/AboutRoute';
 import MenuBar from './components/MenuBar';
+import PropTypes from 'prop-types';
 
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import ActionsRoute from "./components/ActionsRoute";
-import SingleActionRoute from "./components/SingleActionRoute";
+import DetailsRoute from "./components/DetailsRoute";
 
 class App extends React.Component {
 
     state = {
         loggedIn: localStorage.getItem('access_token') !== null,
+        action: undefined,
     };
 
     onLoginAction = (e, email, password) => {
@@ -31,13 +33,17 @@ class App extends React.Component {
                 console.log(res.status);
                 if (res.status === 200)
                     return res.json();
+                this.handleSnackbarPopVariant('error', "Failed to log in");
             })
             .then(json => {
+                if (json === undefined)
+                    return
                 console.log(json);
                 localStorage.setItem('access_token', json.access_token);
                 this.setState({
                     loggedIn: true,
                 });
+                this.handleSnackbarPop("Succesfully logged in");
             })
             .catch(a => {
                 console.log(a)
@@ -63,10 +69,28 @@ class App extends React.Component {
                 this.setState({
                     loggedIn: false,
                 });
+                this.handleSnackbarPop("Succesfully logged out");
 
             });
         localStorage.removeItem('access_token');
     };
+
+    onActionSelected = (action) => {
+        this.setState({
+            action: action,
+        });
+        console.log(this.state.action);
+    };
+
+    handleSnackbarPop = (text) => {
+        this.props.enqueueSnackbar(text);
+      };
+
+    handleSnackbarPopVariant = variant => (text) => {
+     // variant could be success, error, warning or info
+        this.props.enqueueSnackbar(text, { variant });
+    };
+
 
     render() {
         const {loggedIn} = this.state;
@@ -90,22 +114,25 @@ class App extends React.Component {
                         render={() => (loggedIn ? <ProfileRoute/> : <Redirect to="/login"/>)}
                     />
                     <Route
-                        exact
-                        path="/actions"
-                        render={() => (loggedIn ? (<ActionsRoute/>) : <Redirect to="/login"/>)}
-                    />
-                    <Route
-                        path="/actions/:id"
-                        render={({match}) => (loggedIn ? (<SingleActionRoute id={match.params.id}/>) : <Redirect to="/login"/>)}
-                    />
-                    <Route
                         path="/about"
                         component={AboutRoute}
+                    />
+                    <Route
+                        exact
+                        path="/actions"
+                        render={ () => (loggedIn? <ActionsRoute onActionSelected={this.onActionSelected} /> : <Redirect to="/login"/>) }
+                    />
+                    <Route  path="/details"
+                        render={() => (this.state.action ? <DetailsRoute action={this.state.action}/> : <Redirect to="/actions"/>)}
                     />
                 </div>
             </Router>
         );
     }
 }
+
+App.propTypes = {
+    enqueueSnackbar: PropTypes.func.isRequired,
+  };
 
 export default App;

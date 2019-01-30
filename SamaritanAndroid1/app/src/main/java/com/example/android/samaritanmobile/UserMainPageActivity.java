@@ -23,6 +23,11 @@ public class UserMainPageActivity extends AppCompatActivity {
         setUserData();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void rowClick(View view) {
         switch(view.getId()) {
             case R.id.table_row_messages:
@@ -37,18 +42,22 @@ public class UserMainPageActivity extends AppCompatActivity {
             case R.id.table_row_find_actions:
                 startActivity(new Intent(UserMainPageActivity.this, FindActionsActivity.class));
                 break;
+            case R.id.table_log_out:
+                startActivity(new Intent(UserMainPageActivity.this, MainActivity.class));
+                break;
         }
 
 
     }
 
     public void setUserData(){
-        avatar = findViewById(R.id.ivProfile);
-        nameTV = findViewById(R.id.tvName);
-        surnameTV = findViewById(R.id.tvSurname);
-        pointsTV = findViewById(R.id.tvPoints);
-        actionsTV = findViewById(R.id.tvActions);
-        descriptionTV = findViewById(R.id.tvDescription);
+        avatar = (ImageView) findViewById(R.id.ivProfile);
+        nameTV = (TextView) findViewById(R.id.tvName);
+        surnameTV = (TextView) findViewById(R.id.tvSurname);
+        pointsTV = (TextView) findViewById(R.id.tvPoints);
+        actionsTV = (TextView) findViewById(R.id.tvActions);
+        descriptionTV = (TextView) findViewById(R.id.tvDescription);
+        avatar = (ImageView) findViewById(R.id.ivProfile);
 
         //TODO load data from backend
     }

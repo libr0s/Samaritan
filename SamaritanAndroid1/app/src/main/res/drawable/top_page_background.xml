@@ -1,0 +1,32 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:bottom="500dp">
+
+
+        <shape android:shape="rectangle" >
+            <size android:height="100dp" />
+
+            <gradient
+                android:startColor="@color/backgroundStartColor"
+                android:endColor="@color/backgroundEndColor"
+                android:angle="0" />
+
+        </shape>
+    </item>
+
+
+
+    <item android:top="-4800dp">
+
+    <rotate
+        android:fromDegrees="85"
+        android:toDegrees="10"
+        android:pivotX="-40%"
+        android:pivotY="87%" >
+            <shape android:shape="rectangle" >
+                <size android:height="20dp" />
+                <solid android:color="#ffffff" />
+            </shape>
+
+    </rotate>
+    </item>
+</layer-list>

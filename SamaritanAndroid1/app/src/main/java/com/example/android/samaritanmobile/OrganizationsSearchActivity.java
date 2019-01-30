@@ -24,7 +24,7 @@ public class OrganizationsSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizations_search);
 
-        organizationsTable = findViewById(R.id.tableOrganisations);
+        organizationsTable = (TableLayout) findViewById(R.id.tableOrganisations);
         final ArrayList<Organization> organizations = loadOrganizations();
         for(i = 0; i < organizations.size(); i++){
             final TableRow tableRow = new TableRow(this);

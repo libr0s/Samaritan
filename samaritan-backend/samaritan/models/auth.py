@@ -62,11 +62,15 @@ def add_claims_to_access_token(identity):
 class UserRegistration(Resource):
    def post(self):
         data = parser.parse_args()
+        form = None
 
         if data['type'] == 'volunteer':
             form = VolunteerForm(data=request.get_json())
             new_user = User(email = form.email.data, type = data['type'])
-            type_user = Volunteer(name = form.name.data, surname = form.surname.data, user = new_user.id)
+            type_user = Volunteer(
+                name=form.name.data, surname=form.surname.data,
+                user=new_user.id, location=form.location.data
+            )
 
         elif data['type'] == 'organisation':
             form = OrganisationForm(data=request.get_json())
@@ -74,9 +78,11 @@ class UserRegistration(Resource):
             type_user = Organisation(name = form.name.data, city = form.city.data,post_code=form.post_code.data, user = new_user.id)
 
         if form.validate():
-            type_user.save_to_db()
             new_user.hash_password(form.password.data)
             new_user.save_to_db()
+            type_user.user = new_user.id
+            type_user.save_to_db()
+
 
         else:
             return {'message': form.errors},400

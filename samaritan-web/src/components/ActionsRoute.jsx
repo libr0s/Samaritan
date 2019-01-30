@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from "@material-ui/core/Typography/Typography";
@@ -17,6 +18,9 @@ import Spinner from "./Spinner";
 import InfoIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import {Link} from "react-router-dom";
+import MapComponent from "./MapComponent";
+import {getHeaders} from "../utils"
+
 
 const styles = theme => ({
     root: {
@@ -40,18 +44,13 @@ const styles = theme => ({
     }
 });
 
-const token = 'Bearer ' + localStorage.getItem('access_token');
-const reqHeaders = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': token
-});
 
-const ActionLink = (props) => <Link to={`/actions/${props.id}`} {...props} />;
+const DetailsLink = (props) => <Link to="/details" {...props} />;
 
 class ActionsRoute extends React.Component {
 
     state = {
-        actions: [],
+        actions: undefined,
         sentences: [],
         expanded: false,
         open: false,
@@ -64,18 +63,39 @@ class ActionsRoute extends React.Component {
 
     handleClose = () => {
         this.setState({open: false});
+        this.setState({ open: false });
+        this.fetchAccounts();
     };
 
-    componentDidMount() {
-        fetch('/actions', {
-            method: 'GET',
-            headers: reqHeaders,
+    onActionSelected = account => (e) => {
+        this.props.onActionSelected(account);
+    }
+
+    onActionRemoved = account => (e) => {
+        fetch('/action/' + account.id, {
+            method: 'DELETE',
+            headers: getHeaders(),
         })
             .then(response => response.json())
             .then(json => {
                 console.log(json);
-                this.setState({actions: json});
+                this.fetchAccounts();
             });
+    }
+
+    fetchAccounts = () => {
+
+        fetch('/actions', {
+            method: 'GET',
+            headers: getHeaders(),
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log("ACTIONS JSON ", json);
+                if (json)
+                    this.setState({actions: json});
+            });
+
         fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=5&format=json', {
             method: 'GET',
         })
@@ -85,6 +105,11 @@ class ActionsRoute extends React.Component {
                 this.setState({sentences: json});
                 this.setState({fetching: false});
             });
+    }
+
+
+    componentDidMount() {
+       this.fetchAccounts();
     }
 
     handleChange = panel => (event, expanded) => {
@@ -99,69 +124,93 @@ class ActionsRoute extends React.Component {
 
         return (
             this.state.fetching
-                ? <Spinner/>
-                : <div>
-                    <div className={classes.root}>
-                        {actions.map((action, id) => (
-                            <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
-                                            onChange={this.handleChange(`panel${id}`)}>
-                                <ExpansionPanelSummary
-                                    className={classes.panelSummary}
-                                    expandIcon={<ExpandMoreIcon/>}>
-                                    <div>
-                                        <Typography className={classes.heading}>{action.name} <Link to={`/actions/${action.id}`} style={{}}>
-                                            <IconButton color={"primary"}>
-                                                <InfoIcon/>
-                                            </IconButton>
-                                        </Link></Typography>
-
-                                        <Typography
-                                            className={classes.secondaryHeading}>{action.organisation.name}</Typography>
-                                    </div>
-                                    <div>
+            ? <Spinner/>
+            : <div>
+                <div className={classes.root}>
+                    {actions && actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
+                    {actions && actions.map((action, id) => (
+                        <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
+                                        onChange={this.handleChange(`panel${id}`)}>
+                            <ExpansionPanelSummary
+                                className={classes.panelSummary}
+                                expandIcon={<ExpandMoreIcon/>}>
+                                <div>
+                                    <Typography className={classes.heading}>{action.name}</Typography>
+                                    <Typography
+                                        className={classes.secondaryHeading}>{action.organisation.name}</Typography>
+                                </div>
+                                <div>
+                                    <Chip
+                                        color={"primary"}
+                                        avatar={<Avatar><AssessmentIcon/></Avatar>}
+                                        label={`${action.points} pkt`}
+                                    />
+                                </div>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                    <Typography>
+                                        {sentences[id]}
+                                    </Typography>
+                                    <div style={{marginTop: '1em'}}>
                                         <Chip
-                                            color={"primary"}
-                                            avatar={<Avatar><AssessmentIcon/></Avatar>}
-                                            label={`${action.points} pkt`}
+                                            color={"default"}
+                                            avatar={<Avatar><DateRangeIcon/></Avatar>}
+                                            label={action.end_date.substr(0,10)}
+                                            style={{width: 'auto'}}
                                         />
                                     </div>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                                        <Typography>
-                                            {sentences[id]}
-                                        </Typography>
-                                        <div style={{marginTop: '1em'}}>
-                                            <Chip
-                                                color={"default"}
-                                                avatar={<Avatar><DateRangeIcon/></Avatar>}
-                                                label={action.end_date}
-                                                style={{width: 'auto'}}
-                                            />
-                                        </div>
+                                    <div style={{displayy: 'flex', flexDirection: 'column',marginLeft:"auto", marginRight:"auto"}}>
+                                    <Button
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionSelected(action)}
+                                        style={{maxWidth:200}}
+                                        component={DetailsLink}
+                                    >
+                                        EDIT
+                                    </Button>
+                                        <Button
+                                        variant="extendedFab" color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionSelected(action)}
+                                        style={{maxWidth:200}}
+                                        component={DetailsLink}
+                                    >
+                                        DETAILS
+                                    </Button>
+                                    <Button
+                                        color="primary"
+                                        className={classes.button}
+                                        onClick={this.onActionRemoved(action)}
+                                        style={{maxWidth:200}}
+                                    >
+                                        REMOVE
+                                    </Button>
                                     </div>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                        ))}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}>
-                            <Button
-                                onClick={this.handleClickOpen}
-                                style={{position: 'fixed', bottom: '2em', margin: '1em', width: '12em'}}
-                                variant="extendedFab" color="primary"
-                                aria-label="Add"
-                                className={classes.button}>
-                                <AddIcon/>
-                                NEW EVENT
-                            </Button>
-                            <NewAction handleClose={this.handleClose} open={this.state.open}/>
-                        </div>
+                                </div>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    ))}
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}>
+                        <Button
+                            onClick={this.handleClickOpen}
+                            style={{position: 'fixed', bottom: '2em', right: '2em', margin: '1em', width: '12em'}}
+                            variant="extendedFab" color="primary"
+                            aria-label="Add"
+                            className={classes.button}>
+                            <AddIcon/>
+                            NEW EVENT
+                        </Button>
+                        <NewAction handleClose={this.handleClose} open={this.state.open} />
                     </div>
                 </div>
+            </div>
         );
     };
 }

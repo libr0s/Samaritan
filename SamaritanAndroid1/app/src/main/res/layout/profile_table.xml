@@ -29,6 +29,12 @@
                 android:textSize="24sp" />
         </TableRow>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/table_row_messages"
+            android:background="#A9A9A9" />
+
         <TableRow
             android:id="@+id/table_row_my_actions"
             android:onClick="rowClick"
@@ -44,6 +50,12 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
         </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/table_row_my_actions"
+            android:background="#A9A9A9" />
 
 
         <TableRow
@@ -61,6 +73,12 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
         </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/table_row_organisations"
+            android:background="#A9A9A9" />
         <TableRow
             android:id="@+id/table_row_find_actions"
             android:onClick="rowClick"
@@ -77,8 +95,14 @@
                 android:textSize="24sp"
                 />
         </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/table_row_find_actions"
+            android:background="#A9A9A9" />
         <TableRow
-            android:id="@+id/table_three"
+            android:id="@+id/table_log_out"
             android:onClick="rowClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/profileSettings"
+                android:text="@string/logOut"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 />

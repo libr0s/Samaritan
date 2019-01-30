@@ -3,11 +3,15 @@ package com.example.android.samaritanmobile;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Paulina on 11.12.2018.
@@ -18,6 +22,7 @@ public class ActionActivity extends AppCompatActivity {
     private TextView actionNameTV, actionDateTV, actionDescriptionTV;
     private Button joinActionButton;
     private AlertDialog alert;
+    private Fragment mapFragment;
 
 
     @Override
@@ -28,14 +33,16 @@ public class ActionActivity extends AppCompatActivity {
         Intent i = getIntent();
         action = (Action)i.getSerializableExtra("clickedAction");
 
-        actionNameTV = findViewById(R.id.tvActionName);
-        actionDateTV = findViewById(R.id.tvActionDate);
-        actionDescriptionTV = findViewById(R.id.tvActionDescription);
-        joinActionButton = findViewById(R.id.bttnJoinAction);
+        actionNameTV = (TextView) findViewById(R.id.tvActionName);
+        actionDateTV = (TextView) findViewById(R.id.tvActionDate);
+        actionDescriptionTV = (TextView) findViewById(R.id.tvActionDescription);
+        joinActionButton = (Button) findViewById(R.id.bttnJoinAction);
 
         actionNameTV.setText(action.getName());
         actionDateTV.setText(action.getDate());
         actionDescriptionTV.setText(action.getDescription());
+
+
 
 
         joinActionButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +71,8 @@ public class ActionActivity extends AppCompatActivity {
         if(action.isEnteredFromUserPage()){
             joinActionButton.setVisibility(View.INVISIBLE);
         }
+
+        mapFragment = (Fragment)getSupportFragmentManager().findFragmentById(R.id.mapFragmentAction);
     }
 
     private void close(){

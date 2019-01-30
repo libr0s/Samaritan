@@ -45,7 +45,7 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        messagesTable = findViewById(R.id.tableMessages);
+        messagesTable = (TableLayout) findViewById(R.id.tableMessages);
         final ArrayList<Message> messages = loadMessages();
 
         for(i = 0; i < messages.size(); i++){

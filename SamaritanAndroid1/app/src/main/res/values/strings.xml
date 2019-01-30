@@ -25,5 +25,6 @@
     <string name="Delete">Usuń</string>
     <string name="PickPhoto">Wybierz zdjęcie</string>
     <string name="photoNotChosen">Nie wybrano zdjecia.</string>
+    <string name="ChooseYourLocalisation">Wybierz lokalizację:</string>
 
 </resources>

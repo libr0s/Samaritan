@@ -8,9 +8,11 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emailET, loginET, passwordET, nameET, surnameET;
     private TextView avatarStatusTV;
     private Uri avatarPhoto;
+    private Spinner citiesSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,12 @@ public class SignupActivity extends AppCompatActivity {
             }
 
         });
+
+        citiesSpinner = (Spinner)findViewById(R.id.spinnerCities);
+        String[] citiesList = new String[]{"Wroclaw", "Warszawa", "Poznan", "Krakow", "Sopot"};
+        //TODO load cieties from backend
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, citiesList);
+        citiesSpinner.setAdapter(adapter);
 
 
 

@@ -1,5 +1,7 @@
 FROM python:3.6.6-slim-stretch
 
+RUN apt-get update && apt-get -y install build-essential
+
 RUN mkdir /app
 COPY ./requirments.txt /app/
 COPY ./ /app/

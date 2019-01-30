@@ -29,9 +29,9 @@ public class OrganizationPageActivity extends AppCompatActivity{
         Intent i = getIntent();
         organization = (Organization) i.getSerializableExtra("clickedOrganization");
 
-        organizationNameTV = findViewById(R.id.organization_name_text_view);
-        organizationDescriptionTV = findViewById(R.id.organization_description_text_view);
-        sendMessageButton = findViewById(R.id.bttnSendMessage);
+        organizationNameTV = (TextView) findViewById(R.id.organization_name_text_view);
+        organizationDescriptionTV = (TextView) findViewById(R.id.organization_description_text_view);
+        sendMessageButton = (Button) findViewById(R.id.bttnSendMessage);
 
         organizationNameTV.setText(organization.getName());
         organizationDescriptionTV.setText(organization.getDescription());
@@ -46,14 +46,14 @@ public class OrganizationPageActivity extends AppCompatActivity{
                 Button sendButton = messageDialog.findViewById(R.id.bttnSendMessage);
 
                 receipientTV.setText(DataStorage.To + organization.getName());
-                sendButton.setOnClickListener(new View.OnClickListener() {
+                /*sendButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String message = messageET.getText().toString();
                         //TODO send to backend
                         messageDialog.dismiss();
                     }
-                });
+                });*/
             }
         });
 

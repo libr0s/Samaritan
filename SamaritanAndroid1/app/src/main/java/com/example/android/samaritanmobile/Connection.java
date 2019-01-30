@@ -1,35 +1,25 @@
 package com.example.android.samaritanmobile;
 
+/*
+ * Created by Jakub on 28.01.2019.
+ */
+import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-//Singleton
-public class Connection extends Thread {
-    private static final Connection ourInstance = new Connection();
+public class Connection extends AsyncTask<String , Void ,String> {
 
-    private Connection() {
-    }
-
-    public static Connection getInstance() {
-        return ourInstance;
-    }
-
-    private String address = "http://192.168.99.100:8000"; //tu mozna zmienic adres np na localhost czy jakikolwiek inny
-    private String request = "adres/usluga";
-
-    private String token = "none";
+    String address = "http://192.168.99.100:8000"; //tu mozna zmienic adres np na localhost czy jakikolwiek inny
 
     static HttpURLConnection connection;
     static URL url;
 
     JSONObject response;
+    JSONObject request;
 
     private static JSONObject getJSON() {
         try {
@@ -37,6 +27,11 @@ public class Connection extends Thread {
             try {
                 BufferedReader bufferedReader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
+
+                //setToken(connection.getHeaderField("bearer"));
+                if(400 == connection.getResponseCode()){return null;
+                }
+
                 StringBuilder stringBuilder = new StringBuilder();
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
@@ -54,154 +49,8 @@ public class Connection extends Thread {
         }
     }
 
-
-    public void registrationGETReq() throws IOException {
-        request = address + "/registration";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestMethod("GET");
-
-        Thread t = new Thread(this);
-        t.start();
-
-    }
-
-    public void registrationPOSTReq(String email, String password, String name, String surname, String location) throws IOException {
-        request = address + "/registration";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-
-        connection.setRequestMethod("POST");
-    }
-
-    public void loginPOSTReq(String email, String pass) throws IOException {
-        /*
-        Wysylanie Jsonow przez http
-        https://stackoverflow.com/questions/21404252/post-request-send-json-data-java-httpurlconnection
-         */
-        request = address + "/login";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-
-        connection.setRequestMethod("POST");
-
-        //TODO zapisywać token
-    }
-
-    public void logoutPOSTReq() throws IOException {
-        request = address + "/logout";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("POST");
-    }
-
-    public void profileGETReq() throws IOException {
-        request = address + "/profile";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("GET");
-    }
-
-    public void actionsGETReq() throws IOException {
-        request = address + "/actions";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("GET");
-    }
-
-    public void actionsPOSTReq() throws IOException {
-        request = address + "/actions";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("POST");
-    }
-
-    public void actionGETReq(String id_akcji) throws IOException {
-        request = address + "/action/{"+id_akcji+"}";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("POST");
-    }
-
-    public void actionPUTreq(String id_akcji) throws IOException {
-        request = address + "/action/{"+id_akcji+"}";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("PUT");
-    }
-
-    public void actionDELETEReq(String id_akcji) throws IOException {
-        request = address + "/action/{"+id_akcji+"}";
-
-        url = new URL(request);
-        connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Bearer", token);
-
-        connection.setRequestMethod("DELETE");
-    }
-
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
-    public void run() {
-        response = getJSON();
+    protected String doInBackground(String... strings) {
+        return null;
     }
 }

@@ -7,15 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MapComponent from './MapComponent';
-import Geocode from "react-geocode";
+import {getHeaders} from "../utils"
 
-Geocode.setApiKey("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
-const token = 'Bearer ' + localStorage.getItem('access_token');
-const reqHeaders = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': token
-});
 
 export default class FormDialog extends React.Component {
 
@@ -75,7 +69,7 @@ export default class FormDialog extends React.Component {
         console.log("POST /actions");
         fetch('/actions', {
             method: 'POST',
-            headers: reqHeaders,
+            headers: getHeaders(),
             body: JSON.stringify({
                 name: name,
                 description: description,

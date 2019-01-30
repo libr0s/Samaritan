@@ -3,6 +3,7 @@ import { Paper, Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from "@material-ui/core/Button/Button";
 import MapComponent from "./MapComponent";
+import {getHeaders} from "../utils"
 
 const styles = theme => ({
     info: {
@@ -25,12 +26,6 @@ const styles = theme => ({
         marginRight: 'auto',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
     },
-});
-
-const token = 'Bearer ' + localStorage.getItem('access_token');
-const reqHeaders = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': token
 });
 
 class DetailsRoute extends React.Component {
@@ -64,7 +59,7 @@ class DetailsRoute extends React.Component {
     getVolunteersList = () => {
         fetch('/participations/' + this.state.action.id, {
             method: 'GET',
-            headers: reqHeaders,
+            headers: getHeaders(),
         })
             .then(response => { 
                 console.log("[DETAILS] Response: ", response);

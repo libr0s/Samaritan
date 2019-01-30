@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip/Chip";
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import TimeAgo from 'react-timeago';
 import {Planet} from 'react-kawaii';
+import {getHeaders} from "../utils"
 
 const styles = theme => ({
     paper: {
@@ -62,15 +63,9 @@ class ProfileRoute extends React.Component {
     }
 
     getProfileInfo = () => {
-        const token = 'Bearer ' + localStorage.getItem('access_token');
-        const reqHeaders = new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': token
-        });
-
         fetch('/profile', {
             method: 'GET',
-            headers: reqHeaders,
+            headers: getHeaders(),
         })
             .then(response => response.json())
             .then(json => {
@@ -87,7 +82,7 @@ class ProfileRoute extends React.Component {
 
         fetch('/actions', {
             method: 'GET',
-            headers: reqHeaders,
+            headers: getHeaders(),
         })
             .then(response => response.json())
             .then(json => {

@@ -120,7 +120,7 @@ class App extends React.Component {
                     <Route
                         exact
                         path="/actions"
-                        render={ () => <ActionsRoute onActionSelected={this.onActionSelected} /> }
+                        render={ () => (loggedIn? <ActionsRoute onActionSelected={this.onActionSelected} /> : <Redirect to="/login"/>) }
                     />
                     <Route  path="/details"
                         render={() => (this.state.action ? <DetailsRoute action={this.state.action}/> : <Redirect to="/actions"/>)}

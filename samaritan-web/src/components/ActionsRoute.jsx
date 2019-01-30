@@ -15,6 +15,7 @@ import Chip from "@material-ui/core/Chip/Chip";
 import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
 import MapComponent from "./MapComponent";
+import {getHeaders} from "../utils"
 
 
 const styles = theme => ({
@@ -40,19 +41,12 @@ const styles = theme => ({
 });
 
 
-
-const token = 'Bearer ' + localStorage.getItem('access_token');
-const reqHeaders = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': token
-});
-
 const DetailsLink = (props) => <Link to="/details" {...props} />;
 
 class ActionsRoute extends React.Component {
 
     state = {
-        actions: [],
+        actions: undefined,
         sentences: [],
         expanded: false,
         open: false,
@@ -74,7 +68,7 @@ class ActionsRoute extends React.Component {
     onActionRemoved = account => (e) => {
         fetch('/action/' + account.id, {
             method: 'DELETE',
-            headers: reqHeaders,
+            headers: getHeaders,
         })
             .then(response => response.json())
             .then(json => {
@@ -87,13 +81,15 @@ class ActionsRoute extends React.Component {
         
         fetch('/actions', {
             method: 'GET',
-            headers: reqHeaders,
+            headers: getHeaders(),
         })
             .then(response => response.json())
             .then(json => {
-                console.log(json);
-                this.setState({actions: json});
+                console.log("ACTIONS JSON ", json);
+                if (json)
+                    this.setState({actions: json});
             });
+
         fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=5&format=json', {
             method: 'GET',
         })
@@ -122,8 +118,8 @@ class ActionsRoute extends React.Component {
         return (
             <div>
                 <div className={classes.root}>
-                    {actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
-                    {actions.map((action, id) => (
+                    {actions && actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
+                    {actions && actions.map((action, id) => (
                         <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
                                         onChange={this.handleChange(`panel${id}`)}>
                             <ExpansionPanelSummary

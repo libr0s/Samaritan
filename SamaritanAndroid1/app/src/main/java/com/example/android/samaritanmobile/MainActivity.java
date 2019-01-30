@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button)findViewById(R.id.btn_login);
         signupButton = (Button)findViewById(R.id.btn_link_signup);
 
+        emailTV = (TextView)findViewById(R.id.login_input_email);
+        passwordTV = (TextView)findViewById(R.id.login_input_password);
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,17 +40,24 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Connection connection = Connection.getInstance();
-
-                /*połączenie i wysłanie requestu
-                * Narazie testowo wysylam GET registration
-                * */
+                /*połączenie i wysłanie requestu*//*
+                PostLogin postLogin = new PostLogin();
                 try {
-                    connection.registrationGETReq();
-                    //connection.loginPOSTReq(email, pass);
+                    postLogin.connect("u5@wp.pl", "?");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+                PostRegistration postRegistration = new PostRegistration();
+                try {
+                    postRegistration.connect("a", "a", "a", "a", "GDANSK");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+                GetRegistration get = new GetRegistration();
+                get.execute();
+
 
                 // TODO send and email pass to backend
                 startActivity(new Intent(MainActivity.this, UserMainPageActivity.class));

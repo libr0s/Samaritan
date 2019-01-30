@@ -71,7 +71,20 @@ class ActionsRoute extends React.Component {
         this.props.onActionSelected(account);
     }
 
+    onActionRemoved = account => (e) => {
+        fetch('/action/' + account.id, {
+            method: 'DELETE',
+            headers: reqHeaders,
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                this.fetchAccounts();
+            });
+    }
+
     fetchAccounts = () => {
+        
         fetch('/actions', {
             method: 'GET',
             headers: reqHeaders,
@@ -109,7 +122,7 @@ class ActionsRoute extends React.Component {
         return (
             <div>
                 <div className={classes.root}>
-
+                    {actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
                     {actions.map((action, id) => (
                         <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
                                         onChange={this.handleChange(`panel${id}`)}>
@@ -164,9 +177,8 @@ class ActionsRoute extends React.Component {
                                     <Button
                                         color="primary"
                                         className={classes.button}
-                                        onClick={this.onActionSelected(action)} 
+                                        onClick={this.onActionRemoved(action)} 
                                         style={{maxWidth:200}}
-                                        component={DetailsLink}
                                     >
                                         REMOVE
                                     </Button>

@@ -4,6 +4,7 @@ import LoginRoute from './components/LoginRoute';
 import ProfileRoute from './components/ProfileRoute';
 import AboutRoute from './components/AboutRoute';
 import MenuBar from './components/MenuBar';
+import PropTypes from 'prop-types';
 
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import ActionsRoute from "./components/ActionsRoute";
@@ -12,7 +13,7 @@ import DetailsRoute from "./components/DetailsRoute";
 class App extends React.Component {
 
     state = {
-        loggedIn: localStorage.getItem('access_token') !== undefined,
+        loggedIn: localStorage.getItem('access_token') !== null,
         action: undefined,
     };
 
@@ -32,13 +33,17 @@ class App extends React.Component {
                 console.log(res.status);
                 if (res.status === 200)
                     return res.json();
+                this.handleSnackbarPopVariant('error', "Failed to log in");
             })
             .then(json => {
+                if (json === undefined)
+                    return
                 console.log(json);
                 localStorage.setItem('access_token', json.access_token);
                 this.setState({
                     loggedIn: true,
                 });
+                this.handleSnackbarPop("Succesfully logged in");
             })
             .catch(a => {
                 console.log(a)
@@ -64,6 +69,7 @@ class App extends React.Component {
                 this.setState({
                     loggedIn: false,
                 });
+                this.handleSnackbarPop("Succesfully logged out");
 
             });
         localStorage.removeItem('access_token');
@@ -75,6 +81,16 @@ class App extends React.Component {
         });
         console.log(this.state.action);
     };
+
+    handleSnackbarPop = (text) => {
+        this.props.enqueueSnackbar(text);
+      };
+    
+    handleSnackbarPopVariant = variant => (text) => {
+     // variant could be success, error, warning or info
+        this.props.enqueueSnackbar(text, { variant });
+    };
+    
 
     render() {
         const {loggedIn} = this.state;
@@ -114,5 +130,9 @@ class App extends React.Component {
         );
     }
 }
+
+App.propTypes = {
+    enqueueSnackbar: PropTypes.func.isRequired,
+  };  
 
 export default App;

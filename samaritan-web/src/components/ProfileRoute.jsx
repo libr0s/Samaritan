@@ -110,7 +110,7 @@ class ProfileRoute extends React.Component {
     render() {
         const {classes} = this.props;
         const {quoute, action, name, city, code} = this.state;
-
+        
         return (
             <React.Fragment>
                 <CssBaseline/>
@@ -128,7 +128,8 @@ class ProfileRoute extends React.Component {
                     </div>
                     <div className={classes.action}>
                         <Typography>
-                            {action.name} which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!
+                            {action ? action.name + " which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!"
+                                    : "Currently you have no events being organised "}
                         </Typography>
                     </div>
                 </Paper>

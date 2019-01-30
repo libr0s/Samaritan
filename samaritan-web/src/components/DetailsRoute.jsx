@@ -12,8 +12,12 @@ const styles = theme => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
-    payment: {
+    card: {
         marginTop: theme.spacing.unit * 4,
+    },
+    buttons: {
+        display: 'flex',
+
     },
     paper: {
         maxHeight: 580, 
@@ -63,7 +67,7 @@ class DetailsRoute extends React.Component {
         })
             .then(response => { 
                 console.log("[DETAILS] Response: ", response);
-                response.json();
+                return response.json();
             })
             .then(json => {
                 console.log("[DETAILS] Json: ", json);
@@ -115,8 +119,15 @@ class DetailsRoute extends React.Component {
                     <Paper className={classes.paper}>
                         <div>
                             {volunteers ? volunteers.map((volunteer, id) => 
-                            <div className={classes.payment}>
-                                <Typography variant="display1">{volunteer.name}</Typography>
+                            <div className={classes.card}>
+                                <div>
+                                    <Typography variant="title">{volunteer.name} {volunteer.surname}</Typography>
+                                    <Typography variant="body">{volunteer.rank}, {volunteer.points} pkt.</Typography>
+                                </div>
+                                <div className={classes.buttons}>
+                                    <Button>PROFIL</Button>
+                                    <Button>ODRZUĆ</Button>
+                                </div>
                             </div>
                             ) : <Typography variant="display1">Brak uczestników</Typography>}</div>
                     </Paper>

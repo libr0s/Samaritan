@@ -122,10 +122,13 @@ class ProfileRoute extends React.Component {
                         <Chip color={"primary"} avatar={<Avatar><LocationCityIcon/></Avatar>} label={`${city}, ${code}`}/>
                     </div>
                     <div className={classes.action}>
-                        <Typography>
-                            {action ? action.name + " which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!"
-                                    : "Currently you have no events being organised "}
+                        {action ? <Typography>
+                            {action.name} which you organise ends in <TimeAgo date={action.end_date}/>. Do your best!
                         </Typography>
+                        :<Typography>
+                            "Currently, there are no events to come."
+                        </Typography>
+                        }
                     </div>
                 </Paper>
                 <div style={{textAlign: 'center', display: 'flex', alignContent: 'center', flexDirection: 'column', marginTop: '2em'}}>

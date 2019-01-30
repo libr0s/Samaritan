@@ -68,7 +68,7 @@ class ActionsRoute extends React.Component {
     onActionRemoved = account => (e) => {
         fetch('/action/' + account.id, {
             method: 'DELETE',
-            headers: getHeaders,
+            headers: getHeaders(),
         })
             .then(response => response.json())
             .then(json => {

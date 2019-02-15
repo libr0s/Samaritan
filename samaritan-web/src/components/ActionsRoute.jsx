@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button/Button";
 import NewAction from "./NewAction";
 import Spinner from "./Spinner";
 import {getHeaders} from "../utils"
+import EditAction from "./EditAction";
 
 
 const styles = theme => ({
@@ -45,10 +46,12 @@ const DetailsLink = (props) => <Link to="/details" {...props} />;
 class ActionsRoute extends React.Component {
 
     state = {
+        editedAction: {name: '', description: '', points: '', startDate: '', endDate: '', failedFetch: '', city: '', address: '', postalCode: '', geocode: ''},
         actions: undefined,
         sentences: [],
         expanded: false,
         open: false,
+        openEdit: false,
         fetching: true,
     };
 
@@ -58,7 +61,15 @@ class ActionsRoute extends React.Component {
 
     handleClose = () => {
         this.setState({open: false});
-        this.setState({ open: false });
+        this.fetchAccounts();
+    };
+
+    handleOpenEditAction = (action) => {
+        this.setState({editedAction: action, openEdit: true});
+    };
+
+    handleCloseEditAction = () => {
+        this.setState({openEdit: false});
         this.fetchAccounts();
     };
 
@@ -122,7 +133,7 @@ class ActionsRoute extends React.Component {
             ? <Spinner/>
             : <div>
                 <div className={classes.root}>
-                    {actions && actions.length == 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
+                    {actions && actions.length === 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
                     {actions && actions.map((action, id) => (
                         <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
                                         onChange={this.handleChange(`panel${id}`)}>
@@ -159,9 +170,8 @@ class ActionsRoute extends React.Component {
                                     <Button
                                         color="primary"
                                         className={classes.button}
-                                        onClick={this.onActionSelected(action)}
+                                        onClick={() => this.handleOpenEditAction(action)}
                                         style={{maxWidth:200}}
-                                        component={DetailsLink}
                                     >
                                         EDIT
                                     </Button>
@@ -203,6 +213,7 @@ class ActionsRoute extends React.Component {
                             NEW EVENT
                         </Button>
                         <NewAction handleClose={this.handleClose} open={this.state.open} />
+                        <EditAction action={this.state.editedAction} handleClose={this.handleCloseEditAction} open={this.state.openEdit} />
                     </div>
                 </div>
             </div>

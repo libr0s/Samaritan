@@ -6,10 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MapComponent from './MapComponent';
-import {getHeaders} from "../utils"
-
-
+import {getHeaders} from "../utils";
 
 export default class FormDialog extends React.Component {
 
@@ -19,9 +16,9 @@ export default class FormDialog extends React.Component {
         this.state = {
             name: '',
             description: '',
-            points: 0,
-            startDate: '2019-01-09',
-            endDate: '2019-01-09',
+            points: 5,
+            startDate: new Date(Date.now()).toISOString().substring(0, 10),
+            endDate: new Date(Date.now()).toISOString().substring(0, 10),
             failedFetch: false,
             city: '',
             address: '',
@@ -37,31 +34,31 @@ export default class FormDialog extends React.Component {
 
     onChange = (e) => {
         e.preventDefault();
-    
+
         this.setState({
-          [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         })
-      }
+    }
 
     handleConfirm = (e) => {
         const {city, address, postalCode} = this.state;
         fetch(`https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&street=${encodeURIComponent(address)}&postalcode=${encodeURIComponent(postalCode)}&format=json`, {
             method: 'GET'
         })
-        .then(response => {
-            console.log("response: ", response);
-            return response.json();
-        })
-        .then(json => {
-            const bestResponse = json[0]
-            this.setState({geocode: {
-                type: bestResponse.type,
-                lat: bestResponse.lat,
-                lon: bestResponse.lon
-                }  
+            .then(response => {
+                console.log("response: ", response);
+                return response.json();
             })
-            this.sendData(e);
-        })
+            .then(json => {
+                const bestResponse = json[0]
+                this.setState({geocode: {
+                        type: bestResponse.type,
+                        lat: bestResponse.lat,
+                        lon: bestResponse.lon
+                    }
+                })
+                this.sendData(e);
+            })
     }
 
     sendData = (e) => {
@@ -85,7 +82,7 @@ export default class FormDialog extends React.Component {
                 }
             })
         })
-            .then(response => {                
+            .then(response => {
                 console.log("response: ", response.status);
                 if(response.status !== 201)
                 {
@@ -98,10 +95,20 @@ export default class FormDialog extends React.Component {
                 console.log("JSON: ", json);
                 this.setState({actions: json});
                 this.props.handleClose(e);
+            });
+    }
 
-        });
+    validateFields = () => {
+        return this.validateDate()
+            && this.validatePoints()
+            && this.validateRequired();
+    };
 
-
+    validateDate = () => this.state.startDate <= this.state.endDate;
+    validatePoints = () => this.state.points >= 5;
+    validateRequired = () => {
+        const {name, description} = this.state;
+        return name !== '' && description !== '';
     }
 
     render() {
@@ -116,7 +123,7 @@ export default class FormDialog extends React.Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">Create new event</DialogTitle>
-                    
+
                     <DialogContent
                         style={{width: '70vh'}}
                     >
@@ -160,6 +167,7 @@ export default class FormDialog extends React.Component {
                             value={points}
                             type="number"
                             fullWidth
+                            error={!this.validatePoints()}
                         />
                         <DialogContentText>
                             Start Date
@@ -172,11 +180,11 @@ export default class FormDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            
+                            error={!this.validateDate()}
                         />
                         <DialogContentText>
                             End Date
-                        </DialogContentText>                        
+                        </DialogContentText>
                         <TextField
                             id="end-date"
                             name="endDate"
@@ -185,12 +193,12 @@ export default class FormDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            
+                            error={!this.validateDate()}
                         />
-                        <hr />  
+                        <hr />
                         <DialogContentText>
                             City
-                        </DialogContentText>                   
+                        </DialogContentText>
                         <TextField
                             id="city"
                             name="city"
@@ -200,11 +208,11 @@ export default class FormDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            
+
                         />
                         <DialogContentText>
                             Address
-                        </DialogContentText>  
+                        </DialogContentText>
                         <TextField
                             id="address"
                             name="address"
@@ -214,11 +222,10 @@ export default class FormDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            
                         />
                         <DialogContentText>
                             Postal Code
-                        </DialogContentText> 
+                        </DialogContentText>
                         <TextField
                             id="postalCode"
                             name="postalCode"
@@ -229,14 +236,14 @@ export default class FormDialog extends React.Component {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            
+
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleConfirm} color="primary">
+                        <Button onClick={this.handleConfirm} color="primary" disabled={!this.validateFields()}>
                             Create
                         </Button>
                     </DialogActions>

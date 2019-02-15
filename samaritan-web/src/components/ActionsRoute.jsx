@@ -17,7 +17,19 @@ import Spinner from "./Spinner";
 import {getHeaders} from "../utils"
 import EditAction from "./EditAction";
 import TextField from "@material-ui/core/TextField/TextField";
+import { faRunning, faTree, faUniversity, faQuestionCircle, faTools, faWheelchair } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import _ from 'lodash';
 
+const categories = ['sport', 'nature', 'museum', 'engineering', 'disabled', 'other'];
+const catMap = {
+    'sport': faRunning,
+    'nature': faTree,
+    'museum': faUniversity,
+    'engineering': faTools,
+    'disabled': faWheelchair,
+    'other': faQuestionCircle,
+};
 
 const styles = theme => ({
     root: {
@@ -105,8 +117,10 @@ class ActionsRoute extends React.Component {
             .then(response => response.json())
             .then(json => {
                 console.log("ACTIONS JSON ", json);
-                if (json)
+                if (json) {
+                    json.forEach(action => action.category = _.sample(categories));
                     this.setState({actions: json});
+                }
             });
 
         fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=5&format=json', {
@@ -119,7 +133,6 @@ class ActionsRoute extends React.Component {
                 this.setState({fetching: false});
             });
     }
-
 
     componentDidMount() {
        this.fetchAccounts();
@@ -188,6 +201,11 @@ class ActionsRoute extends React.Component {
                                         className={classes.secondaryHeading}>{action.organisation.name}</Typography>
                                 </div>
                                 <div>
+                                    <FontAwesomeIcon
+                                        icon={catMap[action.category]}
+                                        size={5}
+                                        style={{marginRight: '1em', width: '1em', height: '1em'}}
+                                    />
                                     <Chip
                                         color={"primary"}
                                         avatar={<Avatar><AssessmentIcon/></Avatar>}

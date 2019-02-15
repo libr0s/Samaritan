@@ -16,6 +16,7 @@ import NewAction from "./NewAction";
 import Spinner from "./Spinner";
 import {getHeaders} from "../utils"
 import EditAction from "./EditAction";
+import TextField from "@material-ui/core/TextField/TextField";
 
 
 const styles = theme => ({
@@ -37,6 +38,9 @@ const styles = theme => ({
             display: 'flex',
             justifyContent: 'space-between',
         }
+    },
+    textField: {
+        margin: '1em',
     }
 });
 
@@ -53,6 +57,9 @@ class ActionsRoute extends React.Component {
         open: false,
         openEdit: false,
         fetching: true,
+        search: '',
+        dateSortState: true,
+        pointsSortState: true,
     };
 
     handleClickOpen = () => {
@@ -124,6 +131,9 @@ class ActionsRoute extends React.Component {
         });
     };
 
+    sortByDate = (a1, a2) => ((a1.end_date > a2.end_date) && this.state.dateSortState) ? 1 : -1;
+    sortByPoints = (a1, a2) => ((a1.points > a2.points) && this.state.pointsSortState) ? 1 : -1;
+
     render() {
         const {classes} = this.props;
         const {sentences, expanded, actions} = this.state;
@@ -133,8 +143,40 @@ class ActionsRoute extends React.Component {
             ? <Spinner/>
             : <div>
                 <div className={classes.root}>
-                    {actions && actions.length === 0  && <Typography variant="display1">There are no actions to look for in here</Typography>}
-                    {actions && actions.map((action, id) => (
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TextField
+                            id="outlined-search"
+                            label="Search for events"
+                            type="search"
+                            className={classes.textField}
+                            margin="normal"
+                            variant="outlined"
+                            value={this.state.search}
+                            onChange={(e) => {this.setState({search: e.target.value})}}
+                        />
+                        <Button
+                            variant={"outlined"}
+                            style={{height: '1.5em', margin: '1em'}}
+                            onClick={() => this.setState({actions: this.state.actions.sort(this.sortByDate), dateSortState: !this.state.dateSortState})}
+                        >
+                            Sort by date
+                        </Button>
+                        <Button
+                            variant={"outlined"}
+                            style={{height: '1.5em', margin: '1em'}}
+                            onClick={() => this.setState({actions: this.state.actions.sort(this.sortByPoints), pointsSortState: !this.state.pointsSortState})}
+                        >
+                            Sort by points
+                        </Button>
+                    </div>
+                    {actions && actions.length === 0 && <Typography variant="display1">There are no actions to look for in here</Typography>}
+                    {actions && actions.filter((a) => JSON.stringify(a).toLowerCase().includes(this.state.search.toLowerCase())).map((action, id) => (
                         <ExpansionPanel key={id} expanded={expanded === `panel${id}`}
                                         onChange={this.handleChange(`panel${id}`)}>
                             <ExpansionPanelSummary
